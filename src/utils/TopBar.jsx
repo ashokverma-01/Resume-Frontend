@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FiShare2, FiDownload, FiArrowLeft, FiGlobe } from "react-icons/fi";
 import { EyeOff } from "lucide-react";
 import { useParams } from "react-router-dom";
