@@ -21,13 +21,14 @@ const ClassicTemplate = ({ userData, accentColor }) => {
   return (
     <div className="min-h-screen bg-gray-100 md:py-10 flex justify-center items-start overflow-x-hidden">
       <div
-        className="w-full max-w-[850px] bg-white shadow-none md:shadow-2xl p-6 sm:p-10 md:p-14 min-h-screen md:min-h-[1100px] flex flex-col"
+        className="w-full max-w-[850px] bg-white shadow-none md:shadow-2xl p-6 sm:p-10 md:p-14 min-h-screen md:min-h-[1100px] flex flex-col border-t-[8px]"
         style={{
           fontFamily: "'Times New Roman', Times, serif",
           wordBreak: "break-word",
+          borderColor: accentColor, // Top bar color
         }}
       >
-        {/* Name & Title */}
+        {/* Header Section */}
         <header className="text-center mb-6">
           <h1
             className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 uppercase tracking-tight"
@@ -40,9 +41,9 @@ const ClassicTemplate = ({ userData, accentColor }) => {
           </p>
         </header>
 
-        {/* Contact & Social Section */}
+        {/* Contact Info: Colors Fixed for All Icons & Links */}
         <div
-          className="border-y-2 py-4 mb-8"
+          className="border-y py-4 mb-8"
           style={{ borderColor: `${accentColor}40` }}
         >
           <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-3 text-gray-700">
@@ -78,7 +79,7 @@ const ClassicTemplate = ({ userData, accentColor }) => {
           </div>
         </div>
 
-        {/* Summary */}
+        {/* Professional Summary */}
         {summary && (
           <section className="mb-8">
             <h2
@@ -91,20 +92,20 @@ const ClassicTemplate = ({ userData, accentColor }) => {
               className="h-[2px] w-full mb-3"
               style={{ backgroundColor: accentColor }}
             ></div>
-            <p className="text-gray-700 leading-relaxed text-[15px] text-justify">
+            <p className="text-gray-700 leading-relaxed text-[15px] text-justify whitespace-pre-line">
               {summary}
             </p>
           </section>
         )}
 
-        {/* Experience */}
+        {/* Experience Section */}
         {experience.length > 0 && (
           <section className="mb-8">
             <h2
               className="text-lg font-bold uppercase mb-1 tracking-wider"
               style={{ color: accentColor }}
             >
-              Experience
+              Work Experience
             </h2>
             <div
               className="h-[2px] w-full mb-4"
@@ -117,10 +118,10 @@ const ClassicTemplate = ({ userData, accentColor }) => {
                 style={{ borderColor: accentColor }}
               >
                 <div className="flex flex-col sm:flex-row justify-between items-start mb-1">
-                  <h3 className="font-bold text-gray-900 text-[16px] uppercase">
+                  <h3 className="font-bold text-gray-900 text-[16px] uppercase tracking-tight">
                     {exp.position}
                   </h3>
-                  <span className="text-xs font-bold text-gray-500 italic bg-gray-100 px-2 py-1 rounded">
+                  <span className="text-xs font-bold text-gray-500 italic bg-gray-50 px-2 py-1 rounded">
                     {exp.startDate} — {exp.endDate || "Present"}
                   </span>
                 </div>
@@ -130,7 +131,7 @@ const ClassicTemplate = ({ userData, accentColor }) => {
                 >
                   {exp.company}
                 </div>
-                <p className="text-[14px] text-gray-700 leading-snug whitespace-pre-line text-justify">
+                <p className="text-[14px] text-gray-700 leading-snug text-justify whitespace-pre-line">
                   {exp.description}
                 </p>
               </div>
@@ -138,7 +139,7 @@ const ClassicTemplate = ({ userData, accentColor }) => {
           </section>
         )}
 
-        {/* Projects & Education - Two Column Grid */}
+        {/* Projects & Education */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-8">
           <section>
             <h2
@@ -156,7 +157,7 @@ const ClassicTemplate = ({ userData, accentColor }) => {
                 <h3 className="font-bold text-gray-800 text-[15px]">
                   {proj.title}
                 </h3>
-                <p className="text-[13px] text-gray-600 mt-1 leading-snug text-justify">
+                <p className="text-[13px] text-gray-600 mt-1 leading-snug">
                   {proj.description}
                 </p>
               </div>
@@ -175,12 +176,12 @@ const ClassicTemplate = ({ userData, accentColor }) => {
               style={{ backgroundColor: accentColor }}
             ></div>
             {education.map((edu, i) => (
-              <div key={i} className="mb-4">
-                <h3 className="font-bold text-gray-900 text-[15px]">
+              <div key={i} className="mb-4 text-left">
+                <h3 className="font-bold text-gray-900 text-[15px] leading-tight">
                   {edu.institute}
                 </h3>
                 <p className="text-sm italic text-gray-600">{edu.degree}</p>
-                <p className="text-[11px] font-bold text-gray-400 mt-1 uppercase italic">
+                <p className="text-[11px] font-bold text-gray-400 mt-1">
                   {edu.startDate} — {edu.endDate}
                 </p>
               </div>
@@ -188,7 +189,7 @@ const ClassicTemplate = ({ userData, accentColor }) => {
           </section>
         </div>
 
-        {/* Skills & Languages */}
+        {/* Skills & Languages: Bottom Alignment */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-auto">
           <section>
             <h2
@@ -205,7 +206,12 @@ const ClassicTemplate = ({ userData, accentColor }) => {
               {skills.map((skill, i) => (
                 <span
                   key={i}
-                  className="px-2 py-1 bg-gray-50 border border-gray-200 text-gray-700 text-[11px] font-bold uppercase rounded shadow-sm"
+                  className="px-2 py-1 border text-[11px] font-bold uppercase rounded shadow-sm"
+                  style={{
+                    borderColor: accentColor,
+                    color: accentColor,
+                    backgroundColor: `${accentColor}05`,
+                  }}
                 >
                   {skill}
                 </span>
@@ -231,7 +237,7 @@ const ClassicTemplate = ({ userData, accentColor }) => {
                   className="flex items-center gap-2 text-sm text-gray-800 font-semibold"
                 >
                   <span
-                    className="w-1.5 h-1.5 rounded-full"
+                    className="w-2 h-2 rounded-full"
                     style={{ backgroundColor: accentColor }}
                   ></span>
                   {lang}
@@ -245,10 +251,13 @@ const ClassicTemplate = ({ userData, accentColor }) => {
   );
 };
 
-// Fixed Info Component for Clickable Links
+// Info Component: FIXED Color and Link Support
 const Info = ({ icon, text, link, accentColor }) => (
-  <div className="flex items-center gap-1.5 whitespace-nowrap">
-    <span style={{ color: accentColor }} className="text-base">
+  <div className="flex items-center gap-1.5 whitespace-nowrap group">
+    <span
+      style={{ color: accentColor }}
+      className="text-base transition-transform group-hover:scale-110"
+    >
       {icon}
     </span>
     {link ? (
@@ -256,13 +265,15 @@ const Info = ({ icon, text, link, accentColor }) => (
         href={link.startsWith("http") ? link : `https://${link}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-[13px] sm:text-sm font-bold hover:underline decoration-gray-400 transition-all"
-        style={{ color: "inherit" }}
+        className="text-[13px] sm:text-sm font-bold hover:underline decoration-gray-400 transition-colors"
+        style={{ color: accentColor }} // Yahan link ka color wahi hoga jo aap select karenge
       >
         {text}
       </a>
     ) : (
-      <span className="text-[13px] sm:text-sm font-medium">{text}</span>
+      <span className="text-[13px] sm:text-sm font-medium text-gray-700">
+        {text}
+      </span>
     )}
   </div>
 );
