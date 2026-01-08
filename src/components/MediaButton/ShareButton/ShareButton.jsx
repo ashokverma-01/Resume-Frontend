@@ -1,5 +1,5 @@
 export const handleShare = async (link) => {
-  // Check if link contains 'undefined' or 'null' as a string
+  // Agar link me 'undefined' ya 'null' text aa raha hai toh use rokein
   if (!link || link.includes("undefined") || link.includes("null")) {
     alert("Resume link valid nahi hai!");
     return;
@@ -9,18 +9,19 @@ export const handleShare = async (link) => {
     try {
       await navigator.share({
         title: "My Resume",
+        text: "Check out my resume",
         url: link,
       });
     } catch (err) {
-      console.log("Share menu closed");
+      console.log("Share window closed");
     }
   } else {
-    // Desktop ke liye clipboard copy
+    // Desktop fallback: Link copy karein
     try {
       await navigator.clipboard.writeText(link);
       alert("Link copied to clipboard ✅");
     } catch (err) {
-      alert("Copy failed ❌");
+      alert("Failed to copy link ❌");
     }
   }
 };
