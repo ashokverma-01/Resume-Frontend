@@ -1,5 +1,6 @@
 export const handleShare = async (link) => {
-  if (!link || link.includes("null") || link.includes("undefined")) {
+  // Check if link contains 'undefined' or 'null' as a string
+  if (!link || link.includes("undefined") || link.includes("null")) {
     alert("Resume link valid nahi hai!");
     return;
   }
@@ -11,11 +12,15 @@ export const handleShare = async (link) => {
         url: link,
       });
     } catch (err) {
-      console.log("User closed share menu");
+      console.log("Share menu closed");
     }
   } else {
-    // Desktop Fallback
-    navigator.clipboard.writeText(link);
-    alert("Link copied to clipboard! ✅");
+    // Desktop ke liye clipboard copy
+    try {
+      await navigator.clipboard.writeText(link);
+      alert("Link copied to clipboard ✅");
+    } catch (err) {
+      alert("Copy failed ❌");
+    }
   }
 };

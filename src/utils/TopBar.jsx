@@ -8,21 +8,21 @@ import { useNavigate } from "react-router-dom";
 import { useResume } from "../context/Resume/ResumeContext";
 
 const TopBar = () => {
-  const { resumeId } = useResume();
+  const { resumeId, resumeData } = useResume();
   const { id: urlId } = useParams();
   const navigate = useNavigate();
 
   const [isPublic, setIsPublic] = useState(false);
   const togglePublic = () => setIsPublic((prev) => !prev);
 
-  const finalId = resumeId || urlId;
+  const finalId = resumeId || resumeData?._id || urlId;
 
   const onShareClick = () => {
-    // Debugging ke liye
-    console.log("Current ID being shared:", finalId);
+    // Console check karein ki click ke waqt ID mil rahi hai ya nahi
+    console.log("Debug - Final ID:", finalId);
 
-    if (!finalId) {
-      alert("Resume ID nahi mili! Please ek baar resume save karein.");
+    if (!finalId || finalId === "undefined") {
+      alert("Resume link valid nahi hai! Shayad resume abhi save nahi hua.");
       return;
     }
 
