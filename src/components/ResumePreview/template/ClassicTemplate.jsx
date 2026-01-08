@@ -2,26 +2,25 @@ import React from "react";
 import { FiMail, FiPhone, FiMapPin, FiLinkedin, FiGlobe } from "react-icons/fi";
 
 const ClassicTemplate = ({ userData, accentColor }) => {
+  // Destructuring with fallbacks
   const {
     fullName = "Your Name",
-    title,
-    email,
-    phone,
-    address,
-    linkedin,
-    website,
-    summary,
+    title = "",
+    email = "",
+    phone = "",
+    address = "",
+    linkedin = "", // LinkedIn variable
+    website = "", // Website variable
+    summary = "",
     experience = [],
     projects = [],
     education = [],
     skills = [],
     languages = [],
-  } = userData;
+  } = userData || {};
 
   return (
-    /* Outer wrapper: Gray background desktop pe, white mobile pe */
     <div className="min-h-screen bg-gray-50 md:py-10 flex justify-center">
-      {/* Main Paper Container */}
       <div
         className="w-full max-w-[850px] bg-white shadow-none md:shadow-2xl md:rounded-lg p-5 sm:p-8 md:p-12 min-h-screen md:min-h-[1100px]"
         style={{
@@ -29,7 +28,6 @@ const ClassicTemplate = ({ userData, accentColor }) => {
           wordBreak: "break-word",
         }}
       >
-        {/* Header: Name & Title */}
         <header className="text-center mb-6 sm:mb-8">
           <h1
             className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 uppercase tracking-tight"
@@ -42,7 +40,7 @@ const ClassicTemplate = ({ userData, accentColor }) => {
           </p>
         </header>
 
-        {/* Contact Info Section */}
+        {/* Updated Contact Info Section */}
         <div className="flex flex-wrap justify-center gap-y-2 gap-x-4 sm:gap-x-6 text-[13px] sm:text-sm text-gray-700 mb-6 border-y py-4">
           {email && (
             <div className="flex items-center gap-1.5">
@@ -59,24 +57,32 @@ const ClassicTemplate = ({ userData, accentColor }) => {
               <FiMapPin style={{ color: accentColor }} /> <span>{address}</span>
             </div>
           )}
+
+          {/* LinkedIn Fix */}
           {linkedin && (
             <a
-              href={linkedin}
+              href={
+                linkedin.startsWith("http") ? linkedin : `https://${linkedin}`
+              }
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-1.5 hover:underline text-blue-700"
+              className="flex items-center gap-1.5 hover:underline decoration-blue-700"
             >
-              <FiLinkedin /> <span>LinkedIn</span>
+              <FiLinkedin style={{ color: accentColor }} />
+              <span className="text-blue-700">LinkedIn</span>
             </a>
           )}
+
+          {/* Website/Portfolio Fix */}
           {website && (
             <a
-              href={website}
+              href={website.startsWith("http") ? website : `https://${website}`}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-1.5 hover:underline text-blue-700"
+              className="flex items-center gap-1.5 hover:underline decoration-blue-700"
             >
-              <FiGlobe /> <span>Portfolio</span>
+              <FiGlobe style={{ color: accentColor }} />
+              <span className="text-blue-700">Portfolio</span>
             </a>
           )}
         </div>
@@ -155,7 +161,7 @@ const ClassicTemplate = ({ userData, accentColor }) => {
           </section>
         )}
 
-        {/* Skills - Responsive Grid */}
+        {/* Skills */}
         {skills.length > 0 && (
           <section className="mb-8">
             <h2

@@ -17,11 +17,6 @@ const TopBar = () => {
   const finalId = resumeId || resumeData?._id || id;
 
   const onShareClick = () => {
-    console.log("Debug - ResumeId from context:", resumeId);
-    console.log("Debug - ResumeData ID:", resumeData?._id);
-    console.log("Debug - URL ID:", id);
-    console.log("Final ID to be used:", finalId);
-
     if (!finalId || finalId === "undefined" || finalId === "null") {
       alert(
         "Resume link valid nahi hai! Please wait karein ya resume save karein."
