@@ -8,32 +8,25 @@ import { useNavigate } from "react-router-dom";
 import { useResume } from "../context/Resume/ResumeContext";
 
 const TopBar = () => {
-  const { resumeId, getResumeById } = useResume();
-  const { id } = useParams();
+  const { resumeId } = useResume();
+  const { id: urlId } = useParams();
   const navigate = useNavigate();
 
   const [isPublic, setIsPublic] = useState(false);
-
-  // Toggle public/share
   const togglePublic = () => setIsPublic((prev) => !prev);
 
-  useEffect(() => {
-    if (!resumeId && id) {
-      getResumeById(id);
-    }
-  }, [id, resumeId, getResumeById]);
-
-  const currentId = resumeId || id;
-  const resumeShareLink = currentId
-    ? `https://av-resume.vercel.app/${currentId}`
-    : null;
+  const finalId = resumeId || urlId;
 
   const onShareClick = () => {
-    console.log("Debug - Resume ID:", currentId);
-    if (!resumeShareLink) {
-      alert("Resume ID abhi tak load nahi hui hai!");
+    // Debugging ke liye
+    console.log("Current ID being shared:", finalId);
+
+    if (!finalId) {
+      alert("Resume ID nahi mili! Please ek baar resume save karein.");
       return;
     }
+
+    const resumeShareLink = `https://av-resume.vercel.app/public/${finalId}`;
     handleShare(resumeShareLink);
   };
 

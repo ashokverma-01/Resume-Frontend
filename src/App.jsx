@@ -29,6 +29,7 @@ function App() {
               {/* Public Route */}
               <Route path="/login" element={<AuthPage />} />
               <Route path="/google-success" element={<GoogleSuccess />} />
+              <Route path="/public/:resumeId" element={<PublicResume />} />
               <Route
                 element={
                   <ProtectedRoute>
@@ -39,7 +40,6 @@ function App() {
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/resume" element={<ResumeDashboard />} />
                 <Route path="/resume/:id" element={<ResumeDashboard />} />
-                <Route path="/public/:resumeId" element={<PublicResume />} />
               </Route>
             </Routes>
           </Router>
