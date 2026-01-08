@@ -1,268 +1,258 @@
-import React from "react";
 import { FiMail, FiPhone, FiMapPin, FiLinkedin, FiGlobe } from "react-icons/fi";
+import { Link } from "react-router-dom";
 
 const ClassicTemplate = ({ userData, accentColor }) => {
   const {
     fullName = "Your Name",
-    title = "",
-    email = "",
-    phone = "",
-    address = "",
-    linkedin = "",
-    website = "",
-    summary = "",
+    title,
+    email,
+    phone,
+    address,
+    linkedin,
+    website,
+    summary,
     experience = [],
     projects = [],
     education = [],
     skills = [],
     languages = [],
-  } = userData || {};
+  } = userData;
 
   return (
-    <div className="min-h-screen bg-gray-100 md:py-10 flex justify-center items-start overflow-x-hidden">
-      <div
-        className="w-full max-w-[850px] bg-white shadow-none md:shadow-2xl p-6 sm:p-10 md:p-14 min-h-screen md:min-h-[1100px] flex flex-col"
-        style={{
-          fontFamily: "'Times New Roman', Times, serif",
-          wordBreak: "break-word",
-        }}
+    <div
+      className="w-full bg-white p-4 sm:p-6 md:p-8 rounded-xl shadow-lg text-sm sm:text-[15px]"
+      style={{ fontFamily: "Times New Roman, serif" }}
+    >
+      {/* Name */}
+      <h1
+        className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-1 sm:mb-3 md:mb-5"
+        style={{ color: accentColor }}
       >
-        {/* Name & Title */}
-        <header className="text-center mb-6">
-          <h1
-            className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 uppercase tracking-tight"
-            style={{ color: accentColor }}
-          >
-            {fullName}
-          </h1>
-          <p className="text-sm sm:text-base font-bold text-gray-600 uppercase tracking-[3px]">
-            {title}
-          </p>
-        </header>
+        {fullName}
+      </h1>
+      <p className="text-xs sm:text-sm md:text-base font-semibold tracking-wide uppercase text-gray-700 text-center mb-4">
+        {title}
+      </p>
 
-        {/* Contact & Social Section */}
-        <div
-          className="border-y-2 py-4 mb-8"
-          style={{ borderColor: `${accentColor}40` }}
-        >
-          <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-3 text-gray-700">
-            {email && (
-              <Info icon={<FiMail />} text={email} accentColor={accentColor} />
-            )}
-            {phone && (
-              <Info icon={<FiPhone />} text={phone} accentColor={accentColor} />
-            )}
-            {address && (
-              <Info
-                icon={<FiMapPin />}
-                text={address}
-                accentColor={accentColor}
-              />
-            )}
-            {linkedin && (
-              <Info
-                icon={<FiLinkedin />}
-                text="LinkedIn"
-                link={linkedin}
-                accentColor={accentColor}
-              />
-            )}
-            {website && (
-              <Info
-                icon={<FiGlobe />}
-                text="Portfolio"
-                link={website}
-                accentColor={accentColor}
-              />
-            )}
-          </div>
+      {/* Contact */}
+      <div className="flex flex-col gap-3 mb-6 text-gray-700 w-full">
+        {/* Contact Info */}
+        <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center justify-start sm:justify-center gap-2 sm:gap-6 w-full">
+          {email && (
+            <span className="flex items-center gap-2 justify-start w-full sm:w-auto">
+              <FiMail className="text-gray-600" /> {email}
+            </span>
+          )}
+          {phone && (
+            <span className="flex items-center gap-2 justify-start w-full sm:w-auto">
+              <FiPhone className="text-gray-600" /> {phone}
+            </span>
+          )}
+          {address && (
+            <span className="flex items-center gap-2 justify-start w-full sm:w-auto text-left sm:text-center">
+              <FiMapPin className="text-gray-600" /> {address}
+            </span>
+          )}
         </div>
 
-        {/* Summary */}
-        {summary && (
-          <section className="mb-8">
-            <h2
-              className="text-lg font-bold uppercase mb-1 tracking-wider"
-              style={{ color: accentColor }}
-            >
-              Professional Summary
-            </h2>
-            <div
-              className="h-[2px] w-full mb-3"
-              style={{ backgroundColor: accentColor }}
-            ></div>
-            <p className="text-gray-700 leading-relaxed text-[15px] text-justify">
-              {summary}
-            </p>
-          </section>
-        )}
-
-        {/* Experience */}
-        {experience.length > 0 && (
-          <section className="mb-8">
-            <h2
-              className="text-lg font-bold uppercase mb-1 tracking-wider"
-              style={{ color: accentColor }}
-            >
-              Experience
-            </h2>
-            <div
-              className="h-[2px] w-full mb-4"
-              style={{ backgroundColor: accentColor }}
-            ></div>
-            {experience.map((exp, i) => (
-              <div
-                key={i}
-                className="mb-6 last:mb-0 border-l-[3px] pl-4"
-                style={{ borderColor: accentColor }}
-              >
-                <div className="flex flex-col sm:flex-row justify-between items-start mb-1">
-                  <h3 className="font-bold text-gray-900 text-[16px] uppercase">
-                    {exp.position}
-                  </h3>
-                  <span className="text-xs font-bold text-gray-500 italic bg-gray-100 px-2 py-1 rounded">
-                    {exp.startDate} — {exp.endDate || "Present"}
-                  </span>
-                </div>
-                <div
-                  className="text-sm font-bold italic mb-2"
-                  style={{ color: accentColor }}
-                >
-                  {exp.company}
-                </div>
-                <p className="text-[14px] text-gray-700 leading-snug whitespace-pre-line text-justify">
-                  {exp.description}
-                </p>
-              </div>
-            ))}
-          </section>
-        )}
-
-        {/* Projects & Education - Two Column Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-8">
-          <section>
-            <h2
-              className="text-lg font-bold uppercase mb-1 tracking-wider"
-              style={{ color: accentColor }}
-            >
-              Projects
-            </h2>
-            <div
-              className="h-[2px] w-full mb-3"
-              style={{ backgroundColor: accentColor }}
-            ></div>
-            {projects.map((proj, i) => (
-              <div key={i} className="mb-4">
-                <h3 className="font-bold text-gray-800 text-[15px]">
-                  {proj.title}
-                </h3>
-                <p className="text-[13px] text-gray-600 mt-1 leading-snug text-justify">
-                  {proj.description}
-                </p>
-              </div>
-            ))}
-          </section>
-
-          <section>
-            <h2
-              className="text-lg font-bold uppercase mb-1 tracking-wider"
-              style={{ color: accentColor }}
-            >
-              Education
-            </h2>
-            <div
-              className="h-[2px] w-full mb-3"
-              style={{ backgroundColor: accentColor }}
-            ></div>
-            {education.map((edu, i) => (
-              <div key={i} className="mb-4">
-                <h3 className="font-bold text-gray-900 text-[15px]">
-                  {edu.institute}
-                </h3>
-                <p className="text-sm italic text-gray-600">{edu.degree}</p>
-                <p className="text-[11px] font-bold text-gray-400 mt-1 uppercase italic">
-                  {edu.startDate} — {edu.endDate}
-                </p>
-              </div>
-            ))}
-          </section>
-        </div>
-
-        {/* Skills & Languages */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-auto">
-          <section>
-            <h2
-              className="text-lg font-bold uppercase mb-1 tracking-wider"
-              style={{ color: accentColor }}
-            >
-              Skills
-            </h2>
-            <div
-              className="h-[2px] w-full mb-3"
-              style={{ backgroundColor: accentColor }}
-            ></div>
-            <div className="flex flex-wrap gap-2">
-              {skills.map((skill, i) => (
-                <span
-                  key={i}
-                  className="px-2 py-1 bg-gray-50 border border-gray-200 text-gray-700 text-[11px] font-bold uppercase rounded shadow-sm"
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </section>
-
-          <section>
-            <h2
-              className="text-lg font-bold uppercase mb-1 tracking-wider"
-              style={{ color: accentColor }}
-            >
-              Languages
-            </h2>
-            <div
-              className="h-[2px] w-full mb-3"
-              style={{ backgroundColor: accentColor }}
-            ></div>
-            <div className="grid grid-cols-2 gap-y-2">
-              {languages.map((lang, i) => (
-                <div
-                  key={i}
-                  className="flex items-center gap-2 text-sm text-gray-800 font-semibold"
-                >
-                  <span
-                    className="w-1.5 h-1.5 rounded-full"
-                    style={{ backgroundColor: accentColor }}
-                  ></span>
-                  {lang}
-                </div>
-              ))}
-            </div>
-          </section>
+        {/* Social / Links */}
+        <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center justify-start sm:justify-center gap-2 sm:gap-6 w-full">
+          {linkedin && (
+            <Info
+              icon={
+                <FiLinkedin className="inline mr-1 sm:mr-2 text-gray-600" />
+              }
+              link={linkedin}
+              className="w-full sm:w-auto text-left sm:text-center"
+            />
+          )}
+          {website && (
+            <Info
+              icon={<FiGlobe className="inline mr-1 sm:mr-2 text-gray-600" />}
+              link={website}
+              className="w-full sm:w-auto text-left sm:text-center"
+            />
+          )}
         </div>
       </div>
+
+      <hr className="my-4 border-t-2" style={{ borderColor: accentColor }} />
+
+      {/* Summary */}
+      {summary && (
+        <section className="mb-6">
+          <h2
+            className="font-semibold text-lg sm:text-xl mb-2"
+            style={{ color: accentColor }}
+          >
+            Professional Summary
+          </h2>
+          <p className="leading-relaxed">{summary}</p>
+        </section>
+      )}
+
+      {/* Experience */}
+      {experience.length > 0 && (
+        <section className="mb-6">
+          <h2
+            className="font-semibold text-lg sm:text-xl mb-3"
+            style={{ color: accentColor }}
+          >
+            Experience
+          </h2>
+
+          {experience.map((exp, i) => (
+            <div
+              key={i}
+              className="mb-4 border-l-4 pl-3 sm:pl-4"
+              style={{ borderColor: accentColor }}
+            >
+              <div className="flex flex-col sm:flex-row sm:justify-between gap-1 font-semibold">
+                <span>{exp.position || "Position"}</span>
+                <span className="bg-gray-100 text-xs sm:text-sm text-gray-500 py-1 px-3 rounded-md w-fit">
+                  {exp.startDate || "Start"} – {exp.endDate || "End"}
+                </span>
+              </div>
+
+              <div className="font-medium">{exp.company || "Company Name"}</div>
+
+              {exp.description && (
+                <p className="text-gray-700 mt-1 leading-relaxed">
+                  {exp.description}
+                </p>
+              )}
+            </div>
+          ))}
+        </section>
+      )}
+
+      {/* Projects */}
+      {projects.length > 0 && (
+        <section className="mb-6">
+          <h2
+            className="font-semibold text-lg sm:text-xl mb-3"
+            style={{ color: accentColor }}
+          >
+            Projects
+          </h2>
+
+          {projects.map((project, index) => (
+            <div
+              key={index}
+              className="mb-4 pl-3 sm:pl-4 border-l-4"
+              style={{ borderColor: accentColor }}
+            >
+              <div className="font-semibold">
+                {project.title || "Project Title"}
+              </div>
+
+              <p className="mt-1 text-gray-700 leading-relaxed">
+                {project.description || "Project description"}
+              </p>
+            </div>
+          ))}
+        </section>
+      )}
+
+      {/* Education */}
+      {education.length > 0 && (
+        <section className="mb-6">
+          <h2
+            className="font-semibold text-lg sm:text-xl mb-3"
+            style={{ color: accentColor }}
+          >
+            Education
+          </h2>
+
+          {education.map((edu, index) => (
+            <div
+              key={index}
+              className="mb-3 border-l-4 pl-3 sm:pl-4"
+              style={{ borderColor: accentColor }}
+            >
+              <div className="flex flex-col sm:flex-row sm:justify-between font-semibold gap-1">
+                <span>{edu.degree || "Degree"}</span>
+                <span className="bg-gray-100 text-xs sm:text-sm text-gray-500 py-1 px-3 rounded-md w-fit">
+                  {edu.startDate || "Start"} – {edu.endDate || "End"}
+                </span>
+              </div>
+
+              <div className="text-gray-700">
+                {edu.institute || "Institute Name"}
+              </div>
+            </div>
+          ))}
+        </section>
+      )}
+
+      {/* Skills */}
+      {/* Skills */}
+      {skills.length > 0 && (
+        <section className="mb-6">
+          <h2
+            className="font-semibold text-lg sm:text-xl mb-3"
+            style={{ color: accentColor }}
+          >
+            Skills
+          </h2>
+
+          <div className="flex flex-wrap gap-2 sm:gap-3">
+            {skills.map((skill, index) => (
+              <span
+                key={index}
+                className="px-3 sm:px-4 py-1 text-sm sm:text-base rounded-full border font-medium"
+                style={{
+                  borderColor: accentColor,
+                  color: accentColor,
+                }}
+              >
+                {skill}
+              </span>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Languages */}
+      {languages.length > 0 && (
+        <section className="mb-2">
+          <h2
+            className="font-semibold text-lg sm:text-xl mb-3"
+            style={{ color: accentColor }}
+          >
+            Languages
+          </h2>
+
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-2">
+            {languages.map((language, index) => (
+              <li key={index} className="flex items-center gap-2">
+                <span
+                  className="w-2 h-2 rounded-full"
+                  style={{ backgroundColor: accentColor }}
+                />
+                <span className="text-gray-800">{language}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </div>
   );
 };
 
-// Fixed Info Component for Clickable Links
 const Info = ({ icon, text, link, accentColor }) => (
-  <div className="flex items-center gap-1.5 whitespace-nowrap">
-    <span style={{ color: accentColor }} className="text-base">
-      {icon}
-    </span>
+  <div className="flex items-center gap-2 text-gray-700 break-all">
+    {icon}
     {link ? (
-      <a
-        href={link.startsWith("http") ? link : `https://${link}`}
+      <Link
+        to={link}
         target="_blank"
-        rel="noopener noreferrer"
-        className="text-[13px] sm:text-sm font-bold hover:underline decoration-gray-400 transition-all"
-        style={{ color: "inherit" }}
+        className="flex items-center gap-1 text-sm text-gray-700 no-underline hover:underline"
       >
-        {text}
-      </a>
+        {link}
+      </Link>
     ) : (
-      <span className="text-[13px] sm:text-sm font-medium">{text}</span>
+      <span>{text}</span>
     )}
   </div>
 );
