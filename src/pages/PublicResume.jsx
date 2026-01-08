@@ -1,38 +1,63 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"; // Zaroori: URL se ID lene ke liye
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import ResumePreview from "../components/ResumePreview/ResumePreview";
 
 const PublicResume = () => {
-  // useParams ka use karein kyunki URL /public/:resumeId hai
-  const { resumeId: urlId } = useParams();
+  // Dhyan dein: Humne App.js mein path="/public/:resumeId" rakha hai
+  // Isliye yahan resumeId hi nikalna hoga
+  const { resumeId } = useParams();
   const [resume, setResume] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (urlId) {
+    console.log("Fetching resume for ID:", resumeId); // Debugging
+
+    if (resumeId) {
+      setLoading(true);
       axios
         .get(
-          `https://resume-backend-s69p.onrender.com/api/resume/public/${urlId}`
+          `https://resume-backend-s69p.onrender.com/api/resume/public/${resumeId}`
         )
         .then((res) => {
-          setResume(res.data.resume);
+          if (res.data.success) {
+            setResume(res.data.resume);
+          } else {
+            setError("Resume data not found");
+          }
           setLoading(false);
         })
         .catch((err) => {
-          console.error("Resume not found or not public", err);
+          console.error("API Error:", err);
+          setError(err.response?.data?.message || "Failed to load resume");
           setLoading(false);
         });
+    } else {
+      setError("No Resume ID provided in URL");
+      setLoading(false);
     }
-  }, [urlId]);
+  }, [resumeId]);
 
-  if (loading)
-    return <div className="text-center mt-10">Loading Resume...</div>;
-  if (!resume)
+  if (loading) {
     return (
-      <div className="text-center mt-10">Resume not found or Private.</div>
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        <p className="ml-3">Loading Resume...</p>
+      </div>
     );
+  }
 
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen text-red-500">
+        <h2 className="text-2xl font-bold">Error!</h2>
+        <p>{error}</p>
+      </div>
+    );
+  }
+
+  // Agar data mil gaya toh Preview dikhayein
   return <ResumePreview data={resume} />;
 };
 
