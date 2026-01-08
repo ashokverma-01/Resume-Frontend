@@ -14,7 +14,7 @@ const TopBar = () => {
 
   // Toggle public/share
   const togglePublic = () => setIsPublic((prev) => !prev);
-  const resumeShareLink = `https://av-resume.vercel.app//public/${resumeId}`;
+  const resumeShareLink = `https://av-resume.vercel.app/public/${resumeId}`;
 
   return (
     <div className="border-b bg-gray-50 sticky top-0 z-50">

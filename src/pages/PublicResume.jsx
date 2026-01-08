@@ -1,11 +1,11 @@
 // PublicResume.jsx
-import { useParams } from "react-router-dom";
+import { useResume } from "../context/Resume/ResumeContext";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import ResumePreview from "../components/ResumePreview/ResumePreview";
 
 const PublicResume = () => {
-  const { resumeId } = useParams();
+  const { resumeId } = useResume();
   const [resume, setResume] = useState(null);
 
   useEffect(() => {
@@ -15,7 +15,7 @@ const PublicResume = () => {
       )
       .then((res) => setResume(res.data.resume))
       .catch(() => console.log("Resume not public"));
-  }, [id]);
+  }, [resumeId]);
 
   return <ResumePreview data={resume} />;
 };
