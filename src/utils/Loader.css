@@ -1,0 +1,43 @@
+/* Wrapper to center loader vertically and horizontally */
+.loader-wrapper {
+  display: flex;
+  flex-direction: column; /* spinner on top, text below */
+  justify-content: center;
+  align-items: center;
+  min-height: 200px; /* adjust according to your ResumePreview area */
+}
+
+/* The spinning circle loader */
+.loader {
+  border: 5px solid #f3f3f3; /* light gray border */
+  border-radius: 50%;
+  border-top-color: #6366f1; /* primary color */
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px; /* spacing between spinner and text */
+}
+
+/* Spin animation for the circle */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Loader text container */
+.loader-text {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  color: #6366f1; /* match the spinner color */
+  font-weight: 500;
+}
+
+/* Optional spinning icon next to text */
+.loader-icon {
+  margin-right: 6px;
+  animation: spin 1s linear infinite; /* icon spins */
+  font-size: 18px;
+}

@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ================= PRINT ONLY ================= */
+@media print {
+  /* Hide elements explicitly */
+  .no-print {
+    display: none !important;
+  }
+
+  /* Hide everything by default */
+  body * {
+    visibility: hidden;
+  }
+
+  /* Show only resume preview */
+  .resume-print,
+  .resume-print * {
+    visibility: visible;
+  }
+
+  /* Force resume to center A4 */
+  .resume-print {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    width: 210mm;
+    min-height: 297mm;
+    background: white;
+    margin: 0;
+    padding: 0;
+    overflow: visible !important;
+  }
+  @media print {
+    @page {
+      margin: 0;
+    }
+  }
+
+  /* Remove scroll & layout issues */
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    height: auto;
+    overflow: visible;
+  }
+}
+
+.marquee-wrapper {
+  width: 100%;
+  overflow: hidden;
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  align-items: center;
+  white-space: nowrap;
+  animation: marquee 18s linear infinite;
+}
+
+/* IMPORTANT: no padding on wrapper, gap sirf items ke beech */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
