@@ -1,8 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { FiMail, FiPhone, FiMapPin, FiLinkedin, FiGlobe } from "react-icons/fi";
-
-// Aapka preferred Info component layout
 
 const ClassicTemplate = ({ userData, accentColor }) => {
   const {
@@ -30,7 +27,7 @@ const ClassicTemplate = ({ userData, accentColor }) => {
           wordBreak: "break-word",
         }}
       >
-        {/* Header Section */}
+        {/* Name & Title */}
         <header className="text-center mb-6">
           <h1
             className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 uppercase tracking-tight"
@@ -43,8 +40,11 @@ const ClassicTemplate = ({ userData, accentColor }) => {
           </p>
         </header>
 
-        {/* Contact Info Section - Fixed with Info Component */}
-        <div className="border-y py-4 mb-8">
+        {/* Contact & Social Section */}
+        <div
+          className="border-y-2 py-4 mb-8"
+          style={{ borderColor: `${accentColor}40` }}
+        >
           <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-3 text-gray-700">
             {email && (
               <Info icon={<FiMail />} text={email} accentColor={accentColor} />
@@ -61,24 +61,24 @@ const ClassicTemplate = ({ userData, accentColor }) => {
             )}
             {linkedin && (
               <Info
-                icon={
-                  <FiLinkedin className="inline mr-1 sm:mr-2 text-gray-600" />
-                }
+                icon={<FiLinkedin />}
+                text="LinkedIn"
                 link={linkedin}
-                className="w-full sm:w-auto text-left sm:text-center"
+                accentColor={accentColor}
               />
             )}
             {website && (
               <Info
-                icon={<FiGlobe className="inline mr-1 sm:mr-2 text-gray-600" />}
+                icon={<FiGlobe />}
+                text="Portfolio"
                 link={website}
-                className="w-full sm:w-auto text-left sm:text-center"
+                accentColor={accentColor}
               />
             )}
           </div>
         </div>
 
-        {/* Professional Summary */}
+        {/* Summary */}
         {summary && (
           <section className="mb-8">
             <h2
@@ -91,13 +91,13 @@ const ClassicTemplate = ({ userData, accentColor }) => {
               className="h-[2px] w-full mb-3"
               style={{ backgroundColor: accentColor }}
             ></div>
-            <p className="text-gray-700 leading-relaxed text-[15px] text-justify whitespace-pre-line">
+            <p className="text-gray-700 leading-relaxed text-[15px] text-justify">
               {summary}
             </p>
           </section>
         )}
 
-        {/* Experience Section */}
+        {/* Experience */}
         {experience.length > 0 && (
           <section className="mb-8">
             <h2
@@ -117,10 +117,10 @@ const ClassicTemplate = ({ userData, accentColor }) => {
                 style={{ borderColor: accentColor }}
               >
                 <div className="flex flex-col sm:flex-row justify-between items-start mb-1">
-                  <h3 className="font-bold text-gray-900 text-[16px] uppercase tracking-tight">
+                  <h3 className="font-bold text-gray-900 text-[16px] uppercase">
                     {exp.position}
                   </h3>
-                  <span className="text-xs font-bold text-gray-500 italic">
+                  <span className="text-xs font-bold text-gray-500 italic bg-gray-100 px-2 py-1 rounded">
                     {exp.startDate} — {exp.endDate || "Present"}
                   </span>
                 </div>
@@ -130,7 +130,7 @@ const ClassicTemplate = ({ userData, accentColor }) => {
                 >
                   {exp.company}
                 </div>
-                <p className="text-[14px] text-gray-700 leading-snug text-justify whitespace-pre-line">
+                <p className="text-[14px] text-gray-700 leading-snug whitespace-pre-line text-justify">
                   {exp.description}
                 </p>
               </div>
@@ -138,7 +138,7 @@ const ClassicTemplate = ({ userData, accentColor }) => {
           </section>
         )}
 
-        {/* Two Column Grid: Projects & Education */}
+        {/* Projects & Education - Two Column Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-8">
           <section>
             <h2
@@ -156,7 +156,7 @@ const ClassicTemplate = ({ userData, accentColor }) => {
                 <h3 className="font-bold text-gray-800 text-[15px]">
                   {proj.title}
                 </h3>
-                <p className="text-[13px] text-gray-600 mt-1 leading-snug">
+                <p className="text-[13px] text-gray-600 mt-1 leading-snug text-justify">
                   {proj.description}
                 </p>
               </div>
@@ -175,12 +175,12 @@ const ClassicTemplate = ({ userData, accentColor }) => {
               style={{ backgroundColor: accentColor }}
             ></div>
             {education.map((edu, i) => (
-              <div key={i} className="mb-4 text-left">
-                <h3 className="font-bold text-gray-900 text-[15px] leading-tight">
+              <div key={i} className="mb-4">
+                <h3 className="font-bold text-gray-900 text-[15px]">
                   {edu.institute}
                 </h3>
                 <p className="text-sm italic text-gray-600">{edu.degree}</p>
-                <p className="text-[11px] font-bold text-gray-400 mt-1">
+                <p className="text-[11px] font-bold text-gray-400 mt-1 uppercase italic">
                   {edu.startDate} — {edu.endDate}
                 </p>
               </div>
@@ -188,7 +188,7 @@ const ClassicTemplate = ({ userData, accentColor }) => {
           </section>
         </div>
 
-        {/* Bottom Section: Skills & Languages FIXED */}
+        {/* Skills & Languages */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-auto">
           <section>
             <h2
@@ -225,24 +225,18 @@ const ClassicTemplate = ({ userData, accentColor }) => {
               style={{ backgroundColor: accentColor }}
             ></div>
             <div className="grid grid-cols-2 gap-y-2">
-              {languages.length > 0 ? (
-                languages.map((lang, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center gap-2 text-sm text-gray-800 font-semibold"
-                  >
-                    <span
-                      className="w-1.5 h-1.5 rounded-full"
-                      style={{ backgroundColor: accentColor }}
-                    ></span>
-                    {lang}
-                  </div>
-                ))
-              ) : (
-                <p className="text-xs italic text-gray-400">
-                  Add languages in form
-                </p>
-              )}
+              {languages.map((lang, i) => (
+                <div
+                  key={i}
+                  className="flex items-center gap-2 text-sm text-gray-800 font-semibold"
+                >
+                  <span
+                    className="w-1.5 h-1.5 rounded-full"
+                    style={{ backgroundColor: accentColor }}
+                  ></span>
+                  {lang}
+                </div>
+              ))}
             </div>
           </section>
         </div>
@@ -251,19 +245,24 @@ const ClassicTemplate = ({ userData, accentColor }) => {
   );
 };
 
+// Fixed Info Component for Clickable Links
 const Info = ({ icon, text, link, accentColor }) => (
-  <div className="flex items-center gap-2 text-gray-700 break-all">
-    {icon}
+  <div className="flex items-center gap-1.5 whitespace-nowrap">
+    <span style={{ color: accentColor }} className="text-base">
+      {icon}
+    </span>
     {link ? (
-      <Link
-        to={link}
+      <a
+        href={link.startsWith("http") ? link : `https://${link}`}
         target="_blank"
-        className="flex items-center gap-1 text-sm text-gray-700 no-underline hover:underline"
+        rel="noopener noreferrer"
+        className="text-[13px] sm:text-sm font-bold hover:underline decoration-gray-400 transition-all"
+        style={{ color: "inherit" }}
       >
-        {link}
-      </Link>
+        {text}
+      </a>
     ) : (
-      <span>{text}</span>
+      <span className="text-[13px] sm:text-sm font-medium">{text}</span>
     )}
   </div>
 );
