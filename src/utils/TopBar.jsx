@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import { FiShare2, FiDownload, FiArrowLeft, FiGlobe } from "react-icons/fi";
-import { Eye, EyeOff } from "lucide-react"; // Eye icons
+import { EyeOff } from "lucide-react";
 import { handleShare } from "../components/MediaButton/ShareButton/ShareButton";
 import { handleDownload } from "../components/MediaButton/Download/Download";
 import { useNavigate } from "react-router-dom";
+import { useResume } from "../context/Resume/ResumeContext";
 
 const TopBar = () => {
+  const { resumeId } = useResume();
   const navigate = useNavigate();
 
-  // ✅ State to control Share button visibility
-  const [isPublic, setIsPublic] = useState(false); // false = private, true = public
+  const [isPublic, setIsPublic] = useState(false);
 
   // Toggle public/share
   const togglePublic = () => setIsPublic((prev) => !prev);
+  const resumeShareLink = `https://av-resume.vercel.app//public/${resumeId}`;
 
   return (
     <div className="border-b bg-gray-50 sticky top-0 z-50">
@@ -32,8 +34,8 @@ const TopBar = () => {
             {/* Share button only when public */}
             {isPublic && (
               <button
-                className="flex items-center gap-1 px-3 py-1.5 bg-blue-100 text-blue-600 rounded-lg text-sm hover:bg-blue-200 transition whitespace-nowrap"
-                onClick={() => handleShare()}
+                className="flex items-center gap-2 px-3 py-1.5 bg-blue-100 text-blue-600 rounded-lg text-sm hover:bg-blue-200 transition"
+                onClick={() => handleShare(resumeShareLink)}
               >
                 <FiShare2 />
                 Share

@@ -9,6 +9,7 @@ import ResumeDashboard from "./pages/ResumeDashboard";
 import ProtectedRoute from "./components/Protected/ProtectedRoute";
 import Layout from "./components/Protected/Layout";
 import GoogleSuccess from "./pages/google";
+import PublicResume from "./pages/PublicResume";
 
 function App() {
   const didMount = useRef(false);
@@ -38,6 +39,7 @@ function App() {
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/resume" element={<ResumeDashboard />} />
                 <Route path="/resume/:id" element={<ResumeDashboard />} />
+                <Route path="/public/:resumeId" element={<PublicResume />} />
               </Route>
             </Routes>
           </Router>

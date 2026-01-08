@@ -107,6 +107,27 @@ export const ResumeProvider = ({ children }) => {
     }
   };
 
+  // Public resume (NO TOKEN)
+  const getPublicResumeById = async (id) => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get(
+        `https://resume-backend-s69p.onrender.com/api/resume/public/${id}`
+      );
+
+      if (data.success) {
+        setResumeData(data.resume);
+        setResumeId(data.resume._id);
+      }
+
+      return data;
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Fetch all resumes of the user
   const getUserResumes = async () => {
     try {
@@ -139,6 +160,7 @@ export const ResumeProvider = ({ children }) => {
         updateResume,
         getUserResumes,
         getResumeById,
+        getPublicResumeById,
         userResumes,
         resetResume,
         resumeId,

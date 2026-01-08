@@ -1,22 +1,28 @@
-export const handleShare = async (resumeLink) => {
-  if (!resumeLink) return alert("Resume link not found");
+export const handleShare = async (link) => {
+  if (!link) {
+    alert("Resume link not available");
+    return;
+  }
 
-  if (navigator.share) {
-    // Mobile devices
+  // 📱 Mobile devices → Native Share
+  if (navigator.share && /Mobi|Android/i.test(navigator.userAgent)) {
     try {
       await navigator.share({
-        url: resumeLink,
+        title: "My Resume",
+        text: "Check out my resume",
+        url: link,
       });
     } catch (err) {
-      console.log("Share cancelled", err);
+      console.log("Share cancelled");
     }
-  } else {
-    // Desktop fallback → copy to clipboard
+  }
+  // 🖥️ Desktop → Copy link
+  else {
     try {
-      await navigator.clipboard.writeText(resumeLink);
-      alert("Resume link copied to clipboard!");
+      await navigator.clipboard.writeText(link);
+      alert("Resume link copied to clipboard ✅");
     } catch (err) {
-      alert("Failed to copy link");
+      alert("Failed to copy link ❌");
     }
   }
 };
