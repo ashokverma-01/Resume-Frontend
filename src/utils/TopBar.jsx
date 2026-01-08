@@ -8,16 +8,12 @@ import { useResume } from "../context/Resume/ResumeContext";
 
 const TopBar = () => {
   const { resumeId, resumeData } = useResume();
-  const { id } = useParams(); // URL path se ID (e.g. /resume/:id)
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const [isPublic, setIsPublic] = useState(false);
   const togglePublic = () => setIsPublic((prev) => !prev);
 
-  // Sabse important logic: ID nikalne ke saare backup raaste
-  // 1. Context se resumeId
-  // 2. Context ke resumeData ke andar ki _id
-  // 3. URL params se id
   const finalId = resumeId || resumeData?._id || id;
 
   const onShareClick = () => {

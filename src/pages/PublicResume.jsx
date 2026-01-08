@@ -4,16 +4,12 @@ import axios from "axios";
 import ResumePreview from "../components/ResumePreview/ResumePreview";
 
 const PublicResume = () => {
-  // Dhyan dein: Humne App.js mein path="/public/:resumeId" rakha hai
-  // Isliye yahan resumeId hi nikalna hoga
   const { resumeId } = useParams();
   const [resume, setResume] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    console.log("Fetching resume for ID:", resumeId); // Debugging
-
     if (resumeId) {
       setLoading(true);
       axios
@@ -43,22 +39,24 @@ const PublicResume = () => {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-        <p className="ml-3">Loading Resume...</p>
+        <p className="ml-3 font-medium text-gray-600">Loading Resume...</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen text-red-500">
-        <h2 className="text-2xl font-bold">Error!</h2>
-        <p>{error}</p>
+      <div className="flex flex-col items-center justify-center min-h-screen text-red-500 p-4 text-center">
+        <h2 className="text-2xl font-bold mb-2">Error!</h2>
+        <p className="bg-red-50 px-4 py-2 rounded-lg border border-red-200">
+          {error}
+        </p>
       </div>
     );
   }
 
-  // Agar data mil gaya toh Preview dikhayein
-  return <ResumePreview data={resume} />;
+  // Yahan sabse bada change hai: Prop ka naam "userData" hona chahiye
+  return <ResumePreview userData={resume} loading={loading} />;
 };
 
 export default PublicResume;
