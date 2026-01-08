@@ -1,27 +1,21 @@
 export const handleShare = async (link) => {
-  if (!link) {
-    alert("Resume link available nahi hai!");
+  if (!link || link.includes("null") || link.includes("undefined")) {
+    alert("Resume link valid nahi hai!");
     return;
   }
 
-  // Native Browser Share (Windows Share UI)
   if (navigator.share) {
     try {
       await navigator.share({
         title: "My Resume",
-        text: "Check out my professional resume",
         url: link,
       });
     } catch (err) {
-      console.log("Share cancel ho gaya");
+      console.log("User closed share menu");
     }
   } else {
-    // Agar share API nahi hai (Fallback)
-    try {
-      await navigator.clipboard.writeText(link);
-      alert("Link copied to clipboard ✅");
-    } catch (err) {
-      alert("Failed to copy link ❌");
-    }
+    // Desktop Fallback
+    navigator.clipboard.writeText(link);
+    alert("Link copied to clipboard! ✅");
   }
 };

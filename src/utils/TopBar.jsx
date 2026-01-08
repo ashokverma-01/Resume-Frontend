@@ -25,7 +25,7 @@ const TopBar = () => {
 
   const currentId = resumeId || id;
   const resumeShareLink = currentId
-    ? `https://av-resume.vercel.app/public/${currentId}`
+    ? `https://av-resume.vercel.app/${currentId}`
     : null;
 
   const onShareClick = () => {
