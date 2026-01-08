@@ -1,26 +1,25 @@
 export const handleShare = async (link) => {
   if (!link) {
-    alert("Resume link not available");
+    alert("Resume link available nahi hai!");
     return;
   }
 
-  // 📱 Mobile devices → Native Share
-  if (navigator.share && /Mobi|Android/i.test(navigator.userAgent)) {
+  // Native Browser Share (Windows Share UI)
+  if (navigator.share) {
     try {
       await navigator.share({
         title: "My Resume",
-        text: "Check out my resume",
+        text: "Check out my professional resume",
         url: link,
       });
     } catch (err) {
-      console.log("Share cancelled");
+      console.log("Share cancel ho gaya");
     }
-  }
-  // 🖥️ Desktop → Copy link
-  else {
+  } else {
+    // Agar share API nahi hai (Fallback)
     try {
       await navigator.clipboard.writeText(link);
-      alert("Resume link copied to clipboard ✅");
+      alert("Link copied to clipboard ✅");
     } catch (err) {
       alert("Failed to copy link ❌");
     }

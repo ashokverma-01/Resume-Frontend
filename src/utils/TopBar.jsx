@@ -14,7 +14,19 @@ const TopBar = () => {
 
   // Toggle public/share
   const togglePublic = () => setIsPublic((prev) => !prev);
-  const resumeShareLink = `https://av-resume.vercel.app/public/${resumeId}`;
+
+  const resumeShareLink = resumeId
+    ? `https://av-resume.vercel.app/public/${resumeId}`
+    : null;
+
+  const onShareClick = () => {
+    if (!resumeShareLink) {
+      alert("Resume ID load ho rahi hai, please thoda intezar karein...");
+      return;
+    }
+    // Share function ko link pass karein
+    handleShare(resumeShareLink);
+  };
 
   return (
     <div className="border-b bg-gray-50 sticky top-0 z-50">
@@ -35,7 +47,7 @@ const TopBar = () => {
             {isPublic && (
               <button
                 className="flex items-center gap-2 px-3 py-1.5 bg-blue-100 text-blue-600 rounded-lg text-sm hover:bg-blue-200 transition"
-                onClick={() => handleShare(resumeShareLink)}
+                onClick={onShareClick}
               >
                 <FiShare2 />
                 Share
