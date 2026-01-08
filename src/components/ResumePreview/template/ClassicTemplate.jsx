@@ -3,24 +3,6 @@ import { Link } from "react-router-dom";
 import { FiMail, FiPhone, FiMapPin, FiLinkedin, FiGlobe } from "react-icons/fi";
 
 // Aapka preferred Info component layout
-const Info = ({ icon, text, link, accentColor }) => (
-  <div className="flex items-center gap-1.5 whitespace-nowrap">
-    <span style={{ color: accentColor }}>{icon}</span>
-    {link ? (
-      <a
-        href={link.startsWith("http") ? link : `https://${link}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-[13px] sm:text-sm font-semibold hover:underline decoration-gray-400"
-        style={{ color: "inherit" }}
-      >
-        {text || "Link"}
-      </a>
-    ) : (
-      <span className="text-[13px] sm:text-sm">{text}</span>
-    )}
-  </div>
-);
 
 const ClassicTemplate = ({ userData, accentColor }) => {
   const {
@@ -79,18 +61,18 @@ const ClassicTemplate = ({ userData, accentColor }) => {
             )}
             {linkedin && (
               <Info
-                icon={<FiLinkedin />}
-                text="LinkedIn"
+                icon={
+                  <FiLinkedin className="inline mr-1 sm:mr-2 text-gray-600" />
+                }
                 link={linkedin}
-                accentColor={accentColor}
+                className="w-full sm:w-auto text-left sm:text-center"
               />
             )}
             {website && (
               <Info
-                icon={<FiGlobe />}
-                text="Portfolio"
+                icon={<FiGlobe className="inline mr-1 sm:mr-2 text-gray-600" />}
                 link={website}
-                accentColor={accentColor}
+                className="w-full sm:w-auto text-left sm:text-center"
               />
             )}
           </div>
@@ -268,5 +250,22 @@ const ClassicTemplate = ({ userData, accentColor }) => {
     </div>
   );
 };
+
+const Info = ({ icon, text, link, accentColor }) => (
+  <div className="flex items-center gap-2 text-gray-700 break-all">
+    {icon}
+    {link ? (
+      <Link
+        to={link}
+        target="_blank"
+        className="flex items-center gap-1 text-sm text-gray-700 no-underline hover:underline"
+      >
+        {link}
+      </Link>
+    ) : (
+      <span>{text}</span>
+    )}
+  </div>
+);
 
 export default ClassicTemplate;
