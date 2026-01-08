@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { FiShare2, FiDownload, FiArrowLeft, FiGlobe } from "react-icons/fi";
 import { EyeOff } from "lucide-react";
+import { useParams } from "react-router-dom";
 import { handleShare } from "../components/MediaButton/ShareButton/ShareButton";
 import { handleDownload } from "../components/MediaButton/Download/Download";
 import { useNavigate } from "react-router-dom";
 import { useResume } from "../context/Resume/ResumeContext";
 
 const TopBar = () => {
-  const { resumeId } = useResume();
+  const { resumeId, getResumeById } = useResume();
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const [isPublic, setIsPublic] = useState(false);
@@ -15,16 +17,23 @@ const TopBar = () => {
   // Toggle public/share
   const togglePublic = () => setIsPublic((prev) => !prev);
 
-  const resumeShareLink = resumeId
-    ? `https://av-resume.vercel.app/public/${resumeId}`
+  useEffect(() => {
+    if (!resumeId && id) {
+      getResumeById(id);
+    }
+  }, [id, resumeId, getResumeById]);
+
+  const currentId = resumeId || id;
+  const resumeShareLink = currentId
+    ? `https://av-resume.vercel.app/public/${currentId}`
     : null;
 
   const onShareClick = () => {
+    console.log("Debug - Resume ID:", currentId);
     if (!resumeShareLink) {
-      alert("Resume ID load ho rahi hai, please thoda intezar karein...");
+      alert("Resume ID abhi tak load nahi hui hai!");
       return;
     }
-    // Share function ko link pass karein
     handleShare(resumeShareLink);
   };
 
