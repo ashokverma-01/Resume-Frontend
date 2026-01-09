@@ -70,7 +70,7 @@ const Step5Experience = ({ onNext, onBack }) => {
               <button
                 type="button"
                 onClick={() => handleRemove(idx)}
-                className="absolute top-4 right-4 text-red-400 hover:text-red-600 p-2 hover:bg-red-50 rounded-full transition-colors"
+                className="absolute top-2 right-2 text-red-500 font-bold"
               >
                 <FiTrash2 size={18} />
               </button>

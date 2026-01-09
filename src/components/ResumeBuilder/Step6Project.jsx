@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useResume } from "../../context/Resume/ResumeContext";
-import { FiFolder } from "react-icons/fi";
+import { FiFolder, FiTrash2 } from "react-icons/fi";
 
 const DEFAULT_PROJECT = {
   title: "",
@@ -61,7 +61,7 @@ const Step6Project = ({ onNext, onBack }) => {
               onClick={() => handleRemoveProj(idx)}
               className="absolute top-2 right-2 text-red-500 font-bold"
             >
-              ×
+              <FiTrash2 size={18} />
             </button>
           )}
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { parseJSONField } from "../../utils/helper";
 import { useResume } from "../../context/Resume/ResumeContext";
-import { FiPlus, FiX, FiGlobe } from "react-icons/fi";
+import { FiPlus, FiTrash2, FiGlobe } from "react-icons/fi";
 
 const Step8Language = ({ onNext, onBack }) => {
   const { resumeData, updateResumeData } = useResume();
@@ -91,7 +91,7 @@ const Step8Language = ({ onNext, onBack }) => {
               onClick={() => handleRemoveLanguage(lang)}
               className="p-0.5 hover:bg-red-100 rounded-full text-red-500 transition-colors"
             >
-              <FiX size={14} />
+              <FiTrash2 size={18} />
             </button>
           </span>
         ))}

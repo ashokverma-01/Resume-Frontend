@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useResume } from "../../context/Resume/ResumeContext";
-import { FiPlus, FiX, FiZap } from "react-icons/fi";
+import { FiPlus, FiTrash2, FiZap } from "react-icons/fi";
 
 const Step7Skill = ({ onNext, onBack }) => {
   const { resumeData, updateResumeData } = useResume();
@@ -82,7 +82,7 @@ const Step7Skill = ({ onNext, onBack }) => {
                 onClick={() => handleRemoveSkill(skill)}
                 className="p-0.5 hover:bg-red-100 rounded-full text-red-500 transition-colors"
               >
-                <FiX size={14} />
+                <FiTrash2 size={18} />
               </button>
             </div>
           ))
