@@ -1,22 +1,15 @@
 import React, { useState, useEffect } from "react";
 import ProfileImage from "../Profile/profile";
-import { useResume } from "../../context/Resume/ResumeContext";
 import { FiUser } from "react-icons/fi";
 
-const Step1Personal = ({ onNext }) => {
-  const { resumeData, updateResumeData } = useResume();
-  const [localData, setLocalData] = useState(resumeData || {});
+// 1. Destructure userData and setUserData from props
+const Step1Personal = ({ onNext, userData, setUserData, updateResumeData }) => {
   const [preview, setPreview] = useState("");
 
-  // Sync localData with resumeData if it changes
-  useEffect(() => {
-    setLocalData(resumeData || {});
-  }, [resumeData]);
-
-  // Sync profile image preview
+  // Sync profile image preview (using userData directly)
   useEffect(() => {
     let objectUrl;
-    const img = localData.profileImage;
+    const img = userData?.profileImage;
 
     if (!img) {
       setPreview("");
@@ -30,31 +23,32 @@ const Step1Personal = ({ onNext }) => {
     } else if (img instanceof File) {
       objectUrl = URL.createObjectURL(img);
       setPreview(objectUrl);
-    } else {
-      setPreview("");
     }
 
     return () => {
       if (objectUrl) URL.revokeObjectURL(objectUrl);
     };
-  }, [localData.profileImage]);
+  }, [userData?.profileImage]);
 
-  // Handle input changes
+  // 2. LIVE CHANGE: Direct parent state update
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setLocalData((prev) => ({ ...prev, [name]: value }));
+    setUserData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   // Handle profile image upload
   const handleImageUpload = (file) => {
     if (!(file instanceof File)) return;
-    setLocalData((prev) => ({ ...prev, profileImage: file }));
+    setUserData((prev) => ({ ...prev, profileImage: file }));
   };
 
-  // Save local data to context and move to next step
-  const handleNext = () => {
-    updateResumeData(localData); // update context
-    onNext(); // move to next step
+  const handleNextAction = () => {
+    // Context update for DB/Persistence
+    updateResumeData(userData);
+    onNext();
   };
 
   return (
@@ -68,49 +62,47 @@ const Step1Personal = ({ onNext }) => {
         </h2>
       </div>
 
-      {/* Profile Image */}
       <div className="flex justify-center mb-6">
         <ProfileImage image={preview} setImage={handleImageUpload} />
       </div>
 
-      {/* Inputs */}
       <div className="space-y-4">
+        {/* 3. Bind values directly to userData */}
         <Input
           label="Full Name"
           name="fullName"
-          value={localData.fullName || ""}
+          value={userData?.fullName || ""}
           onChange={handleChange}
         />
         <Input
           label="Title"
           name="title"
-          value={localData.title || ""}
+          value={userData?.title || ""}
           onChange={handleChange}
         />
         <Input
           label="Email"
           name="email"
-          value={localData.email || ""}
+          value={userData?.email || ""}
           onChange={handleChange}
         />
         <Input
           label="Phone"
           name="phone"
-          value={localData.phone || ""}
+          value={userData?.phone || ""}
           onChange={handleChange}
         />
         <Input
           label="Address"
           name="address"
-          value={localData.address || ""}
+          value={userData?.address || ""}
           onChange={handleChange}
         />
       </div>
 
-      {/* Save & Next button */}
       <div className="flex justify-center mt-6">
         <button
-          onClick={handleNext}
+          onClick={handleNextAction}
           className="flex items-center gap-2 px-3 py-1.5 bg-green-100 text-green-600 rounded-lg text-sm hover:bg-green-200 transition border border-transparent hover:border-green-500"
         >
           Save & Next
@@ -120,7 +112,6 @@ const Step1Personal = ({ onNext }) => {
   );
 };
 
-// Reusable Input component
 const Input = ({ label, name, value, onChange }) => (
   <div>
     <label className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase ml-1">

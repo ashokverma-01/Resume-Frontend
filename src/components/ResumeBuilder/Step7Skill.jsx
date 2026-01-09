@@ -1,34 +1,52 @@
-import React, { useState, useEffect } from "react";
-import { useResume } from "../../context/Resume/ResumeContext";
+import React, { useState } from "react";
 import { FiPlus, FiTrash2, FiZap } from "react-icons/fi";
 
-const Step7Skill = ({ onNext, onBack }) => {
-  const { resumeData, updateResumeData } = useResume();
-  const [skillList, setSkillList] = useState(resumeData.skills || []);
+const Step7Skill = ({
+  onNext,
+  onBack,
+  userData,
+  setUserData,
+  updateResumeData,
+}) => {
+  // Local input ke liye sirf state rakhein (ye preview mein nahi jata)
   const [skillInput, setSkillInput] = useState("");
 
-  useEffect(() => {
-    setSkillList(resumeData.skills || []);
-  }, [resumeData.skills]);
+  // Data seedha userData se fetch karein
+  const skillList = userData.skills || [];
 
   const handleAddSkill = () => {
     const trimmed = skillInput.trim();
     if (!trimmed) return;
 
-    if (skillList.some((s) => s.toLowerCase() === trimmed.toLowerCase()))
+    // Case-insensitive check taaki duplicate skills na ho
+    if (skillList.some((s) => s.toLowerCase() === trimmed.toLowerCase())) {
+      setSkillInput("");
       return;
+    }
 
     const updatedSkills = [...skillList, trimmed];
-    setSkillList(updatedSkills);
+
+    // LIVE UPDATE: Parent state update karein
+    setUserData((prev) => ({
+      ...prev,
+      skills: updatedSkills,
+    }));
+
     setSkillInput("");
   };
 
-  const handleRemoveSkill = (skill) => {
-    const updatedSkills = skillList.filter((s) => s !== skill);
-    setSkillList(updatedSkills);
+  const handleRemoveSkill = (skillToRemove) => {
+    const updatedSkills = skillList.filter((s) => s !== skillToRemove);
+
+    // LIVE UPDATE: Parent state update karein
+    setUserData((prev) => ({
+      ...prev,
+      skills: updatedSkills,
+    }));
   };
 
-  const handleNext = () => {
+  const handleNextAction = () => {
+    // Context persistence for database
     updateResumeData({ skills: skillList });
     onNext();
   };
@@ -44,37 +62,35 @@ const Step7Skill = ({ onNext, onBack }) => {
 
       {/* Input Section */}
       <div className="flex flex-col gap-3 mb-6">
-        <div className="w-full">
-          <input
-            type="text"
-            value={skillInput || ""}
-            onChange={(e) => setSkillInput(e.target.value)}
-            placeholder="e.g. Graphic Design"
-            className="w-full border border-gray-300 px-4 py-3 rounded-xl text-sm focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all shadow-sm"
-            onKeyDown={(e) => e.key === "Enter" && handleAddSkill()}
-          />
-        </div>
+        <input
+          type="text"
+          value={skillInput}
+          onChange={(e) => setSkillInput(e.target.value)}
+          placeholder="e.g. React, Node.js, Python"
+          className="w-full border border-gray-300 px-4 py-3 rounded-xl text-sm focus:ring-2 focus:ring-blue-400 outline-none transition-all shadow-sm"
+          onKeyDown={(e) => e.key === "Enter" && handleAddSkill()}
+        />
 
         <button
           onClick={handleAddSkill}
-          className="w-full py-3 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-600 hover:text-white transition-all font-semibold flex items-center justify-center gap-2 border border-blue-100 active:scale-[0.98]"
+          className="w-full py-3 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-600 hover:text-white transition-all font-semibold flex items-center justify-center gap-2 border border-blue-100"
         >
           <FiPlus size={18} />
-          Add Skills
+          Add Skill
         </button>
       </div>
 
-      {/* Skills Showcase */}
-      <div className="flex flex-wrap gap-2 mb-8">
+      {/* Skills Showcase - Direct mapping from parent data */}
+      <div className="flex flex-wrap gap-2 mb-8 min-h-[40px]">
         {skillList.length === 0 ? (
           <p className="text-gray-400 text-sm italic py-2">
-            Start typing to showcase your expertise
+            Start adding skills to see them in preview
           </p>
         ) : (
           skillList.map((skill, index) => (
             <div
               key={index}
-              className="bg-gray-50 text-gray-700 px-4 py-1.5 rounded-full flex items-center gap-2 text-sm border border-gray-200"
+              className="bg-gray-50 text-gray-700 px-4 py-1.5 rounded-full flex items-center gap-2 text-sm border border-gray-200 animate-in fade-in zoom-in duration-300"
             >
               {skill}
               <button
@@ -93,13 +109,13 @@ const Step7Skill = ({ onNext, onBack }) => {
       <div className="flex items-center justify-between pt-5 border-t border-gray-100 gap-4">
         <button
           onClick={onBack}
-          className="flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-600 rounded-lg text-sm hover:bg-gray-200 transition border border-transparent hover:border-gray-400"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition disabled:opacity-40 disabled:cursor-not-allowed border border-transparent hover:border-gray-400"
         >
           Back
         </button>
 
         <button
-          onClick={handleNext}
+          onClick={handleNextAction}
           className="flex items-center gap-2 px-3 py-1.5 bg-green-100 text-green-600 rounded-lg text-sm hover:bg-green-200 transition border border-transparent hover:border-green-500"
         >
           Save & Next

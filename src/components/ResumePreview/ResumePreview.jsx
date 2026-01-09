@@ -11,8 +11,6 @@ const ResumePreview = ({ userData, selectedTemplate, loading }) => {
   const { resumeData: contextData } = useResume();
   const { accentColor: contextColor } = useAccentColor();
 
-  // Logic: Agar props se userData mil raha hai (Public link) toh wo use karo,
-  // warna Context wala data use karo (Editor/Dashboard).
   const finalData = userData || contextData;
   const finalColor = userData?.accentColor || contextColor || "#6366f1";
 

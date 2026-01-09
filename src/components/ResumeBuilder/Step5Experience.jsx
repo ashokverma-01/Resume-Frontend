@@ -1,13 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useResume } from "../../context/Resume/ResumeContext";
+import React from "react";
 import DateInput from "../../utils/DateInput";
-import {
-  FiPlus,
-  FiTrash2,
-  FiArrowLeft,
-  FiArrowRight,
-  FiBriefcase,
-} from "react-icons/fi";
+import { FiPlus, FiTrash2, FiBriefcase } from "react-icons/fi";
 
 const DEFAULT_EXPERIENCE = {
   company: "",
@@ -17,34 +10,42 @@ const DEFAULT_EXPERIENCE = {
   description: "",
 };
 
-const Step5Experience = ({ onNext, onBack }) => {
-  const { resumeData, updateResumeData } = useResume();
-  const [experienceList, setExperienceList] = useState(
-    resumeData.experience?.length ? resumeData.experience : [DEFAULT_EXPERIENCE]
-  );
+const Step5Experience = ({
+  onNext,
+  onBack,
+  userData,
+  setUserData,
+  updateResumeData,
+}) => {
+  // Local state ki jagah directly userData se list lein
+  const experienceList = userData.experience?.length
+    ? userData.experience
+    : [DEFAULT_EXPERIENCE];
 
-  useEffect(() => {
-    setExperienceList(
-      resumeData.experience?.length
-        ? resumeData.experience
-        : [DEFAULT_EXPERIENCE]
-    );
-  }, [resumeData.experience]);
-
+  // LIVE CHANGE: Direct parent state update logic for arrays
   const handleChange = (index, e) => {
     const { name, value } = e.target;
-    setExperienceList((prev) =>
-      prev.map((item, i) => (i === index ? { ...item, [name]: value } : item))
-    );
+    const newExperience = [...experienceList];
+    newExperience[index] = { ...newExperience[index], [name]: value };
+
+    setUserData((prev) => ({
+      ...prev,
+      experience: newExperience,
+    }));
   };
 
-  const handleAdd = () =>
-    setExperienceList((prev) => [...prev, DEFAULT_EXPERIENCE]);
+  const handleAdd = () => {
+    const newExperience = [...experienceList, DEFAULT_EXPERIENCE];
+    setUserData((prev) => ({ ...prev, experience: newExperience }));
+  };
 
-  const handleRemove = (index) =>
-    setExperienceList((prev) => prev.filter((_, i) => i !== index));
+  const handleRemove = (index) => {
+    const newExperience = experienceList.filter((_, i) => i !== index);
+    setUserData((prev) => ({ ...prev, experience: newExperience }));
+  };
 
-  const handleNext = () => {
+  const handleNextAction = () => {
+    // Context persistence for DB save
     updateResumeData({ experience: experienceList });
     onNext();
   };
@@ -70,7 +71,7 @@ const Step5Experience = ({ onNext, onBack }) => {
               <button
                 type="button"
                 onClick={() => handleRemove(idx)}
-                className="absolute top-2 right-2 text-red-500 font-bold"
+                className="absolute top-4 right-4 text-red-500 hover:text-red-700"
               >
                 <FiTrash2 size={18} />
               </button>
@@ -81,7 +82,7 @@ const Step5Experience = ({ onNext, onBack }) => {
                 label="Company Name"
                 name="company"
                 placeholder="e.g. Google"
-                value={exp.company}
+                value={exp.company || ""}
                 onChange={(e) => handleChange(idx, e)}
               />
 
@@ -89,11 +90,10 @@ const Step5Experience = ({ onNext, onBack }) => {
                 label="Job Position"
                 name="position"
                 placeholder="e.g. Senior Developer"
-                value={exp.position}
+                value={exp.position || ""}
                 onChange={(e) => handleChange(idx, e)}
               />
 
-              {/* 🔹 Date Grid: Mobile par 1 column, Tablet/Laptop par 2 columns */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="flex flex-col gap-1">
                   <label className="text-xs font-bold text-gray-500 uppercase ml-1">
@@ -108,7 +108,6 @@ const Step5Experience = ({ onNext, onBack }) => {
                     }
                   />
                 </div>
-
                 <div className="flex flex-col gap-1">
                   <label className="text-xs font-bold text-gray-500 uppercase ml-1">
                     End Date
@@ -128,7 +127,7 @@ const Step5Experience = ({ onNext, onBack }) => {
                 label="Description"
                 name="description"
                 placeholder="Describe your key achievements..."
-                value={exp.description}
+                value={exp.description || ""}
                 onChange={(e) => handleChange(idx, e)}
                 textarea
               />
@@ -140,22 +139,20 @@ const Step5Experience = ({ onNext, onBack }) => {
       <button
         type="button"
         onClick={handleAdd}
-        className="w-full py-3 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-600 hover:text-white transition-all font-semibold flex items-center justify-center gap-2 border border-blue-100 active:scale-[0.98]"
+        className="w-full mt-4 py-3 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-600 hover:text-white transition-all font-semibold flex items-center justify-center gap-2 border border-blue-100"
       >
-        <FiPlus /> Add Experience
+        <FiPlus size={18} /> Add Experience
       </button>
 
-      {/* Navigation */}
       <div className="flex justify-between mt-6">
         <button
           onClick={onBack}
-          className="flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-600 rounded-lg text-sm hover:bg-gray-200 transition border border-transparent hover:border-gray-400"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition disabled:opacity-40 disabled:cursor-not-allowed border border-transparent hover:border-gray-400"
         >
           Back
         </button>
-
         <button
-          onClick={handleNext}
+          onClick={handleNextAction}
           className="flex items-center gap-2 px-3 py-1.5 bg-green-100 text-green-600 rounded-lg text-sm hover:bg-green-200 transition border border-transparent hover:border-green-500"
         >
           Save & Next
@@ -184,7 +181,7 @@ const InputField = ({
         onChange={onChange}
         placeholder={placeholder}
         rows={4}
-        className="w-full bg-white border border-gray-200 rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-400 outline-none transition-all resize-none"
+        className="w-full bg-white border border-gray-200 rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-400 outline-none transition-all resize-none shadow-sm"
       />
     ) : (
       <input
@@ -193,7 +190,7 @@ const InputField = ({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className="w-full bg-white border border-gray-200 rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-400 outline-none transition-all"
+        className="w-full bg-white border border-gray-200 rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-400 outline-none transition-all shadow-sm"
       />
     )}
   </div>

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { FiArrowRight, FiArrowLeft } from "react-icons/fi";
 
 import Step1Personal from "./Step1Personal";
 import Step2Links from "./Step2Links";
@@ -33,21 +32,29 @@ const ResumeBuilder = ({
   // Step Next handler
   const handleNext = async (data = {}) => {
     if (loading) return;
-    updateResumeData(data);
-    setUserData((prev) => ({ ...prev, ...data }));
+
+    // 1. Latest data ko calculate karein
+    const updatedData = { ...userData, ...data };
+
+    // 2. Local preview aur Context ko update karein
+    setUserData(updatedData);
+    updateResumeData(data); // Ye context state update karega
 
     if (step === 8) {
       let res;
+      // 3. API Call: Ensure karein ki hum latest data bhej rahe hain
+      // Agar aapka addResume/updateResume context se data leta hai,
+      // toh usey thoda wait karna pad sakta hai ya direct data pass karna hoga.
 
       if (resumeId) {
-        res = await updateResume();
+        res = await updateResume(updatedData); // updatedData pass karna safe hai
       } else {
-        res = await addResume();
+        res = await addResume(updatedData);
       }
 
       if (res?.success) {
         alert(resumeId ? "Resume updated ✅" : "Resume added ✅");
-        setStep(9); // preview page
+        setStep(9);
       } else {
         alert(res?.message || "Something went wrong");
       }
@@ -135,6 +142,7 @@ const ResumeBuilder = ({
               <Step2Links
                 userData={userData}
                 onNext={handleNext}
+                setUserData={setUserData}
                 onBack={goPrevStep}
                 updateResumeData={updateResumeData}
               />
@@ -143,6 +151,7 @@ const ResumeBuilder = ({
               <Step3Summary
                 userData={userData}
                 onNext={handleNext}
+                setUserData={setUserData}
                 onBack={goPrevStep}
                 updateResumeData={updateResumeData}
               />
@@ -151,6 +160,7 @@ const ResumeBuilder = ({
               <Step4Education
                 userData={userData}
                 onNext={handleNext}
+                setUserData={setUserData}
                 onBack={goPrevStep}
                 updateResumeData={updateResumeData}
               />
@@ -159,6 +169,7 @@ const ResumeBuilder = ({
               <Step5Experience
                 userData={userData}
                 onNext={handleNext}
+                setUserData={setUserData}
                 onBack={goPrevStep}
                 updateResumeData={updateResumeData}
               />
@@ -167,6 +178,7 @@ const ResumeBuilder = ({
               <Step6Project
                 userData={userData}
                 onNext={handleNext}
+                setUserData={setUserData}
                 onBack={goPrevStep}
                 updateResumeData={updateResumeData}
               />
@@ -175,6 +187,7 @@ const ResumeBuilder = ({
               <Step7Skill
                 userData={userData}
                 onNext={handleNext}
+                setUserData={setUserData}
                 onBack={goPrevStep}
                 updateResumeData={updateResumeData}
               />
@@ -183,6 +196,7 @@ const ResumeBuilder = ({
               <Step8Language
                 userData={userData}
                 onNext={handleNext}
+                setUserData={setUserData}
                 onBack={goPrevStep}
                 updateResumeData={updateResumeData}
               />

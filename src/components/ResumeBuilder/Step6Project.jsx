@@ -1,41 +1,48 @@
-import React, { useState, useEffect } from "react";
-import { useResume } from "../../context/Resume/ResumeContext";
-import { FiFolder, FiTrash2 } from "react-icons/fi";
+import React from "react";
+import { FiFolder, FiTrash2, FiPlus } from "react-icons/fi";
 
 const DEFAULT_PROJECT = {
   title: "",
   description: "",
 };
 
-const Step6Project = ({ onNext, onBack }) => {
-  const { resumeData, updateResumeData } = useResume();
+const Step6Project = ({
+  onNext,
+  onBack,
+  userData,
+  setUserData,
+  updateResumeData,
+}) => {
+  // Directly use userData projects or fallback to default
+  const projectsList = userData.projects?.length
+    ? userData.projects
+    : [DEFAULT_PROJECT];
 
-  const [projectsList, setProjectsList] = useState(
-    resumeData.projects?.length ? resumeData.projects : [DEFAULT_PROJECT]
-  );
-
-  // 🔄 Sync with context when user navigates back
-  useEffect(() => {
-    setProjectsList(
-      resumeData.projects?.length ? resumeData.projects : [DEFAULT_PROJECT]
-    );
-  }, [resumeData.projects]);
-
+  // LIVE CHANGE: Parent state (userData) ko update karne ka logic
   const handleProjChange = (index, e) => {
     const { name, value } = e.target;
-    setProjectsList((prev) =>
-      prev.map((item, i) => (i === index ? { ...item, [name]: value } : item))
-    );
+    const newProjects = [...projectsList];
+    newProjects[index] = { ...newProjects[index], [name]: value };
+
+    setUserData((prev) => ({
+      ...prev,
+      projects: newProjects,
+    }));
   };
 
-  const handleAddProj = () =>
-    setProjectsList((prev) => [...prev, DEFAULT_PROJECT]);
+  const handleAddProj = () => {
+    const newProjects = [...projectsList, DEFAULT_PROJECT];
+    setUserData((prev) => ({ ...prev, projects: newProjects }));
+  };
 
-  const handleRemoveProj = (index) =>
-    setProjectsList((prev) => prev.filter((_, i) => i !== index));
+  const handleRemoveProj = (index) => {
+    const newProjects = projectsList.filter((_, i) => i !== index);
+    setUserData((prev) => ({ ...prev, projects: newProjects }));
+  };
 
-  const handleNext = () => {
-    updateResumeData({ projects: projectsList }); // 🔹 update context
+  const handleNextAction = () => {
+    // Save to context for persistence
+    updateResumeData({ projects: projectsList });
     onNext();
   };
 
@@ -53,13 +60,13 @@ const Step6Project = ({ onNext, onBack }) => {
       {projectsList.map((proj, idx) => (
         <div
           key={idx}
-          className="mb-4 p-4 border rounded-lg relative bg-gray-50"
+          className="mb-4 p-4 border rounded-lg relative bg-gray-50/50 hover:bg-white transition-all"
         >
           {projectsList.length > 1 && (
             <button
               type="button"
               onClick={() => handleRemoveProj(idx)}
-              className="absolute top-2 right-2 text-red-500 font-bold"
+              className="absolute top-2 right-2 text-red-500 hover:text-red-700"
             >
               <FiTrash2 size={18} />
             </button>
@@ -85,22 +92,22 @@ const Step6Project = ({ onNext, onBack }) => {
       <button
         type="button"
         onClick={handleAddProj}
-        className="w-full py-3 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-600 hover:text-white transition-all font-semibold flex items-center justify-center gap-2 border border-blue-100 active:scale-[0.98]"
+        className="w-full py-3 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-600 hover:text-white transition-all font-semibold flex items-center justify-center gap-2 border border-blue-100"
       >
-        + Add Project
+        <FiPlus size={18} /> Add Project
       </button>
 
       {/* Navigation Buttons */}
       <div className="flex justify-between mt-6">
         <button
           onClick={onBack}
-          className="flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-600 rounded-lg text-sm hover:bg-gray-200 transition border border-transparent hover:border-gray-400"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition disabled:opacity-40 disabled:cursor-not-allowed border border-transparent hover:border-gray-400"
         >
           Back
         </button>
 
         <button
-          onClick={handleNext}
+          onClick={handleNextAction}
           className="flex items-center gap-2 px-3 py-1.5 bg-green-100 text-green-600 rounded-lg text-sm hover:bg-green-200 transition border border-transparent hover:border-green-500"
         >
           Save & Next
@@ -113,16 +120,16 @@ const Step6Project = ({ onNext, onBack }) => {
 // Reusable InputField component
 const InputField = ({ label, name, value, onChange, textarea }) => (
   <div className="mb-2">
-    <labe className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase ml-1">
+    <label className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase ml-1">
       {label}
-    </labe>
+    </label>
     {textarea ? (
       <textarea
         name={name}
         value={value}
         onChange={onChange}
         rows={3}
-        className="w-full bg-white border border-gray-200 rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-400 outline-none transition-all resize-none"
+        className="w-full bg-white border border-gray-200 rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-400 outline-none transition-all resize-none shadow-sm"
       />
     ) : (
       <input
@@ -130,7 +137,7 @@ const InputField = ({ label, name, value, onChange, textarea }) => (
         name={name}
         value={value}
         onChange={onChange}
-        className="w-full border border-gray-300 px-4 py-3 rounded-xl text-sm focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all shadow-sm"
+        className="w-full border border-gray-300 px-4 py-3 rounded-xl text-sm focus:ring-2 focus:ring-blue-400 outline-none transition-all shadow-sm"
       />
     )}
   </div>

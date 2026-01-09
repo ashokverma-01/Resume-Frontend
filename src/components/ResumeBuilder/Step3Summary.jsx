@@ -1,18 +1,26 @@
-import React, { useState, useEffect } from "react";
-import { useResume } from "../../context/Resume/ResumeContext";
+import React from "react";
 import { FiEdit3 } from "react-icons/fi";
 
-const Step3Summary = ({ onNext, onBack }) => {
-  const { resumeData, updateResumeData } = useResume();
-  const [summary, setSummary] = useState(resumeData.summary || "");
+// Props mein userData aur setUserData add karein
+const Step3Summary = ({
+  onNext,
+  onBack,
+  userData,
+  setUserData,
+  updateResumeData,
+}) => {
+  // LIVE CHANGE: Direct parent state update
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setUserData((prev) => ({
+      ...prev,
+      summary: value,
+    }));
+  };
 
-  // Sync with context
-  useEffect(() => {
-    setSummary(resumeData.summary || "");
-  }, [resumeData.summary]);
-
-  const handleNext = () => {
-    updateResumeData({ summary });
+  const handleNextAction = () => {
+    // Context persistence
+    updateResumeData({ summary: userData.summary });
     onNext();
   };
 
@@ -31,37 +39,39 @@ const Step3Summary = ({ onNext, onBack }) => {
         attention.
       </p>
 
-      {/* Input Field */}
+      {/* Input Field - Ab ye direct userData.summary se linked hai */}
       <div className="mb-8">
         <textarea
-          value={summary}
-          onChange={(e) => setSummary(e.target.value)}
+          value={userData?.summary || ""}
+          onChange={handleChange} // Har stroke par dashboard update hoga
           rows={6}
-          placeholder="e.g. Passionate Software Engineer with 5+ years of experience in building scalable web applications..."
-          className="w-full bg-gray-50 border-2 border-transparent rounded-2xl px-5 py-4 text-sm sm:text-base focus:bg-white focus:border-blue-400 focus:ring-4 focus:ring-blue-50 outline-none transition-all placeholder:text-gray-400 resize-none shadow-inner"
+          placeholder="e.g. Passionate Software Engineer with 5+ years of experience..."
+          className="w-full bg-white border border-gray-200 rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-400 outline-none transition-all resize-none"
         />
         <div className="flex justify-end mt-2">
           <span
             className={`text-[10px] font-bold uppercase ${
-              summary.length > 200 ? "text-green-500" : "text-gray-400"
+              (userData?.summary?.length || 0) > 200
+                ? "text-green-500"
+                : "text-gray-400"
             }`}
           >
-            {summary.length} Characters
+            {userData?.summary?.length || 0} Characters
           </span>
         </div>
       </div>
 
-      {/* 🔹 Responsive Navigation Buttons */}
+      {/* Navigation Buttons */}
       <div className="flex justify-between mt-6">
         <button
           onClick={onBack}
-          className="flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-600 rounded-lg text-sm hover:bg-gray-200 transition border border-transparent hover:border-gray-400"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition disabled:opacity-40 disabled:cursor-not-allowed border border-transparent hover:border-gray-400"
         >
           Back
         </button>
 
         <button
-          onClick={handleNext}
+          onClick={handleNextAction}
           className="flex items-center gap-2 px-3 py-1.5 bg-green-100 text-green-600 rounded-lg text-sm hover:bg-green-200 transition border border-transparent hover:border-green-500"
         >
           Save & Next
