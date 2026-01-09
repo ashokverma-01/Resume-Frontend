@@ -96,7 +96,7 @@ const ResumeBuilder = ({
           disabled={step === 1}
           className="flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition disabled:opacity-40 disabled:cursor-not-allowed border border-transparent hover:border-gray-400"
         >
-          <FiArrowLeft className="text-sm" />
+          {/* <FiArrowLeft className="text-sm" /> */}
           Back
         </button>
 
@@ -106,7 +106,7 @@ const ResumeBuilder = ({
           className="flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm bg-green-100 text-green-600 rounded-lg hover:bg-green-200 transition border border-transparent hover:border-green-400"
         >
           Next
-          <FiArrowRight className="text-sm" />
+          {/* <FiArrowRight className="text-sm" /> */}
         </button>
       </div>
 

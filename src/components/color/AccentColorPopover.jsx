@@ -29,45 +29,58 @@ const AccentColorPopover = ({ options, selectedColor, onSelect }) => {
       <button
         ref={btnRef}
         onClick={() => setOpen((prev) => !prev)}
-        className="flex items-center gap-2 px-3 py-1.5 bg-purple-100 text-purple-600 rounded-lg text-sm hover:bg-purple-200 transition border border-transparent hover:border-purple-500"
+        className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-100 text-purple-600 rounded-lg text-xs sm:text-sm hover:bg-purple-200 transition border border-transparent hover:border-purple-400 font-medium"
       >
-        <FaPalette /> Accent
+        <FaPalette className="text-sm" />
+        <span>Color</span>
       </button>
 
-      {/* Popover */}
+      {/* Popover - Responsive Fix */}
       {open && (
         <div
           ref={popRef}
-          className="absolute center top-full mt-2 left-0 w-40 bg-white border border-gray-200 shadow-lg rounded-lg p-3 flex flex-wrap gap-3 z-50"
+          className="absolute top-full mt-2 left-0 xs:left-auto xs:-right-10 sm:right-0 w-[180px] sm:w-[220px] bg-white border border-gray-200 shadow-xl rounded-xl p-3 z-50 animate-in fade-in zoom-in duration-150"
         >
-          {options.map((item, i) => {
-            const isSelected = selectedColor === item.color;
+          <p className="text-[10px] uppercase tracking-wider text-gray-400 font-bold px-1 mb-2">
+            Accent Color
+          </p>
 
-            return (
-              <div
-                key={i}
-                className="flex flex-col items-center cursor-pointer"
-                onClick={() => {
-                  onSelect(item.color);
-                  setOpen(false);
-                }}
-              >
-                {/* Color circle */}
+          <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+            {options.map((item, i) => {
+              const isSelected = selectedColor === item.color;
+
+              return (
                 <div
-                  className="relative w-8 h-8 rounded-full border flex items-center justify-center"
-                  style={{ backgroundColor: item.color }}
+                  key={i}
+                  className="flex flex-col items-center group cursor-pointer"
+                  onClick={() => {
+                    onSelect(item.color);
+                    setOpen(false);
+                  }}
                 >
-                  {isSelected && (
-                    <span className="absolute flex items-center justify-center w-5 h-5 rounded-full ">
-                      <FiCheck className="text-white text-lg" />
-                    </span>
-                  )}
-                </div>
+                  {/* Color circle */}
+                  <div
+                    className={`relative w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-gray-100 flex items-center justify-center transition-transform active:scale-90 group-hover:scale-105 shadow-sm ${
+                      isSelected ? "ring-2 ring-purple-400 ring-offset-2" : ""
+                    }`}
+                    style={{ backgroundColor: item.color }}
+                  >
+                    {isSelected && (
+                      <FiCheck className="text-white text-lg drop-shadow-md" />
+                    )}
+                  </div>
 
-                <span className="text-xs mt-1">{item.name}</span>
-              </div>
-            );
-          })}
+                  <span
+                    className={`text-[10px] mt-1.5 truncate w-full text-center ${
+                      isSelected ? "text-purple-600 font-bold" : "text-gray-500"
+                    }`}
+                  >
+                    {item.name}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
     </div>
