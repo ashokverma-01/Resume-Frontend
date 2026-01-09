@@ -91,7 +91,7 @@ const Step8Language = ({ onNext, onBack }) => {
               onClick={() => handleRemoveLanguage(lang)}
               className="p-0.5 hover:bg-red-100 rounded-full text-red-500 transition-colors"
             >
-              <FiTrash2 size={18} />
+              <FiTrash2 size={14} />
             </button>
           </span>
         ))}

@@ -82,7 +82,7 @@ const Step7Skill = ({ onNext, onBack }) => {
                 onClick={() => handleRemoveSkill(skill)}
                 className="p-0.5 hover:bg-red-100 rounded-full text-red-500 transition-colors"
               >
-                <FiTrash2 size={18} />
+                <FiTrash2 size={14} />
               </button>
             </div>
           ))
