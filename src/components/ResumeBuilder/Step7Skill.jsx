@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useResume } from "../../context/Resume/ResumeContext";
-import { FiPlus, FiX } from "react-icons/fi";
+import { FiPlus, FiX, FiZap } from "react-icons/fi";
 
 const Step7Skill = ({ onNext, onBack }) => {
   const { resumeData, updateResumeData } = useResume();
@@ -35,11 +35,11 @@ const Step7Skill = ({ onNext, onBack }) => {
 
   return (
     <div className="bg-white p-5 sm:p-7 rounded-3xl shadow-xl shadow-gray-100 border border-gray-100 max-w-md mx-auto">
-      <div className="flex items-center gap-2 mb-6">
-        <div className="w-2 h-8 bg-blue-500 rounded-full"></div>
-        <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
-          My Skills
-        </h2>
+      <div className="flex items-center gap-3 mb-6">
+        <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
+          <FiZap size={20} />
+        </div>
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Skills</h2>
       </div>
 
       {/* Input Section */}

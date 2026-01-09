@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useResume } from "../../context/Resume/ResumeContext";
+import { FiFolder } from "react-icons/fi";
 
 const DEFAULT_PROJECT = {
   title: "",
@@ -40,7 +41,14 @@ const Step6Project = ({ onNext, onBack }) => {
 
   return (
     <div className="bg-white p-6 rounded-xl shadow-md max-w-md mx-auto">
-      <h2 className="text-xl font-semibold mb-4">Projects</h2>
+      <div className="flex items-center gap-3 mb-6">
+        <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
+          <FiFolder size={20} />
+        </div>
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
+          Projects
+        </h2>
+      </div>
 
       {projectsList.map((proj, idx) => (
         <div
@@ -58,7 +66,7 @@ const Step6Project = ({ onNext, onBack }) => {
           )}
 
           <InputField
-            label="Project Title"
+            label="Title"
             name="title"
             value={proj.title || ""}
             onChange={(e) => handleProjChange(idx, e)}
@@ -77,7 +85,7 @@ const Step6Project = ({ onNext, onBack }) => {
       <button
         type="button"
         onClick={handleAddProj}
-        className="mb-4 px-4 py-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition"
+        className="w-full py-3 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-600 hover:text-white transition-all font-semibold flex items-center justify-center gap-2 border border-blue-100 active:scale-[0.98]"
       >
         + Add Project
       </button>
@@ -112,7 +120,7 @@ const InputField = ({ label, name, value, onChange, textarea }) => (
         value={value}
         onChange={onChange}
         rows={3}
-        className="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-blue-400 outline-none"
+        className="w-full bg-white border border-gray-200 rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-400 outline-none transition-all resize-none"
       />
     ) : (
       <input

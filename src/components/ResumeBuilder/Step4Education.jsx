@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useResume } from "../../context/Resume/ResumeContext";
-import DateInput from "../../utils/DateInput"; // your custom month picker
+import DateInput from "../../utils/DateInput";
+import {
+  FiPlus,
+  FiTrash2,
+  FiArrowLeft,
+  FiArrowRight,
+  FiBookOpen,
+} from "react-icons/fi";
 
 const Step4Education = ({ onNext, onBack }) => {
   const { resumeData, updateResumeData } = useResume();
@@ -11,7 +18,6 @@ const Step4Education = ({ onNext, onBack }) => {
       : [{ institute: "", degree: "", startDate: "", endDate: "" }]
   );
 
-  // Sync local state with context
   useEffect(() => {
     setEducationList(
       resumeData.education?.length
@@ -39,75 +45,98 @@ const Step4Education = ({ onNext, onBack }) => {
   };
 
   const handleNext = () => {
-    updateResumeData({ education: educationList }); // update context
+    updateResumeData({ education: educationList });
     onNext();
   };
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-md max-w-md mx-auto">
-      <h2 className="text-xl font-semibold mb-4">Education</h2>
-
-      {educationList.map((edu, index) => (
-        <div
-          key={index}
-          className="mb-4 p-4 border rounded-lg relative bg-gray-50"
-        >
-          {educationList.length > 1 && (
-            <button
-              type="button"
-              onClick={() => handleRemove(index)}
-              className="absolute top-2 right-2 text-red-500 font-bold text-lg"
-            >
-              ×
-            </button>
-          )}
-
-          <Input
-            label="Institute"
-            name="institute"
-            value={edu.institute || ""}
-            onChange={(e) => handleChange(index, e)}
-          />
-
-          <Input
-            label="Degree"
-            name="degree"
-            value={edu.degree || ""}
-            onChange={(e) => handleChange(index, e)}
-          />
-
-          <div className="mt-3">
-            <label className="block text-gray-700 mb-1">Start Date</label>
-            <DateInput
-              value={edu.startDate ? edu.startDate.substring(0, 7) : ""}
-              onChange={(e) =>
-                handleChange(index, {
-                  target: { name: "startDate", value: e.target.value },
-                })
-              }
-            />
-          </div>
-
-          <div className="mt-3">
-            <label className="block text-gray-700 mb-1">End Date</label>
-            <DateInput
-              value={edu.endDate ? edu.endDate.substring(0, 7) : ""}
-              onChange={(e) =>
-                handleChange(index, {
-                  target: { name: "endDate", value: e.target.value },
-                })
-              }
-            />
-          </div>
+    <div className="bg-white p-4 sm:p-7 rounded-3xl shadow-xl shadow-gray-100 border border-gray-100 max-w-2xl mx-auto">
+      {/* Header */}
+      <div className="flex items-center gap-3 mb-6">
+        <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
+          <FiBookOpen size={20} />
         </div>
-      ))}
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
+          Education
+        </h2>
+      </div>
 
+      <div className="space-y-6">
+        {educationList.map((edu, index) => (
+          <div
+            key={index}
+            className="p-4 sm:p-5 border border-gray-100 rounded-2xl relative bg-gray-50/50 hover:bg-white hover:border-purple-100 transition-all duration-300"
+          >
+            {/* Remove Button */}
+            {educationList.length > 1 && (
+              <button
+                type="button"
+                onClick={() => handleRemove(index)}
+                className="absolute top-4 right-4 text-red-400 hover:text-red-600 p-2 hover:bg-red-50 rounded-full transition-colors"
+              >
+                <FiTrash2 size={18} />
+              </button>
+            )}
+
+            <div className="grid grid-cols-1 gap-4">
+              <Input
+                label="Institute / University"
+                name="institute"
+                placeholder="e.g. University of Delhi"
+                value={edu.institute || ""}
+                onChange={(e) => handleChange(index, e)}
+              />
+
+              <Input
+                label="Degree / Course"
+                name="degree"
+                placeholder="e.g. Bachelor of Technology"
+                value={edu.degree || ""}
+                onChange={(e) => handleChange(index, e)}
+              />
+
+              {/* 🔹 Responsive Date Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-1">
+                <div className="flex flex-col gap-1">
+                  <label className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase ml-1">
+                    Start Date
+                  </label>
+                  <DateInput
+                    value={edu.startDate ? edu.startDate.substring(0, 7) : ""}
+                    onChange={(e) =>
+                      handleChange(index, {
+                        target: { name: "startDate", value: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="flex flex-col gap-1">
+                  <label className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase ml-1">
+                    End Date
+                  </label>
+                  <DateInput
+                    value={edu.endDate ? edu.endDate.substring(0, 7) : ""}
+                    onChange={(e) =>
+                      handleChange(index, {
+                        target: { name: "endDate", value: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Add Button */}
       <button
         type="button"
         onClick={handleAdd}
-        className="mb-4 px-4 py-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition"
+        className="w-full py-3 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-600 hover:text-white transition-all font-semibold flex items-center justify-center gap-2 border border-blue-100 active:scale-[0.98]"
       >
-        + Add Education
+        <FiPlus /> Add Education
       </button>
 
       {/* Navigation Buttons */}
@@ -130,16 +159,19 @@ const Step4Education = ({ onNext, onBack }) => {
   );
 };
 
-// ---------- Reusable Input Component ----------
-const Input = ({ label, name, value, onChange }) => (
-  <div className="mb-2">
-    <label className="block text-gray-700 mb-1">{label}</label>
+// ---------- Optimized Input Component ----------
+const Input = ({ label, name, value, onChange, placeholder }) => (
+  <div className="flex flex-col gap-1">
+    <label className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase ml-1">
+      {label}
+    </label>
     <input
       type="text"
       name={name}
       value={value}
       onChange={onChange}
-      className="w-full border border-gray-300 px-4 py-3 rounded-xl text-sm focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all shadow-sm"
+      placeholder={placeholder}
+      className="w-full bg-white border border-gray-200 px-4 py-3 rounded-xl text-sm focus:ring-2 focus:ring-purple-400 outline-none transition-all placeholder:text-gray-300 shadow-sm"
     />
   </div>
 );

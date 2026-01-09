@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useResume } from "../../context/Resume/ResumeContext";
+import { FaLinkedin } from "react-icons/fa";
 
 const Step2Links = ({ onNext, onBack }) => {
   const { resumeData, updateResumeData } = useResume();
@@ -31,12 +32,19 @@ const Step2Links = ({ onNext, onBack }) => {
 
   return (
     <div className="bg-white p-6 rounded-xl shadow-md max-w-md mx-auto">
-      <h2 className="text-xl font-semibold mb-4">Professional & Links</h2>
+      <div className="flex items-center gap-3 mb-6">
+        <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
+          <FaLinkedin size={20} />
+        </div>
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
+          Personal Links
+        </h2>
+      </div>
 
       {/* Inputs */}
       <div className="space-y-4">
         <Input
-          label="LinkedIn Profile"
+          label="LinkedIn"
           name="linkedin"
           value={formData.linkedin}
           onChange={handleChange}
@@ -44,7 +52,7 @@ const Step2Links = ({ onNext, onBack }) => {
         />
 
         <Input
-          label="Personal Website / Portfolio"
+          label="Portfolio"
           name="website"
           value={formData.website}
           onChange={handleChange}

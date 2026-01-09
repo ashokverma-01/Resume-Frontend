@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { parseJSONField } from "../../utils/helper";
 import { useResume } from "../../context/Resume/ResumeContext";
-import { FiPlus, FiX } from "react-icons/fi";
+import { FiPlus, FiX, FiGlobe } from "react-icons/fi";
 
 const Step8Language = ({ onNext, onBack }) => {
   const { resumeData, updateResumeData } = useResume();
@@ -44,7 +44,14 @@ const Step8Language = ({ onNext, onBack }) => {
 
   return (
     <div className="bg-white p-5 sm:p-6 rounded-2xl shadow-sm border border-gray-100 max-w-md mx-auto">
-      <h2 className="text-xl font-bold text-gray-800 mb-5">Languages</h2>
+      <div className="flex items-center gap-3 mb-6">
+        <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
+          <FiGlobe size={20} />
+        </div>
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
+          Languages
+        </h2>
+      </div>
 
       {/* Input Section - Stacked for Mobile */}
       <div className="flex flex-col gap-3 mb-6">
