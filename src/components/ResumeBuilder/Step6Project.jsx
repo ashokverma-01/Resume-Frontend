@@ -113,7 +113,9 @@ const Step6Project = ({ onNext, onBack }) => {
 // Reusable InputField component
 const InputField = ({ label, name, value, onChange, textarea }) => (
   <div className="mb-2">
-    <label className="block text-gray-700 mb-1">{label}</label>
+    <labe className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase ml-1">
+      {label}
+    </labe>
     {textarea ? (
       <textarea
         name={name}

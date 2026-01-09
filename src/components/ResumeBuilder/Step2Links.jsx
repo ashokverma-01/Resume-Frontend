@@ -83,7 +83,7 @@ const Step2Links = ({ onNext, onBack }) => {
 // Reusable Input component
 const Input = ({ label, name, value, onChange, placeholder }) => (
   <div>
-    <label className="block text-sm font-medium text-gray-700 mb-1">
+    <label className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase ml-1">
       {label}
     </label>
     <input

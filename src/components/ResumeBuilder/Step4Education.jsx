@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useResume } from "../../context/Resume/ResumeContext";
 import DateInput from "../../utils/DateInput";
-import {
-  FiPlus,
-  FiTrash2,
-  FiArrowLeft,
-  FiArrowRight,
-  FiBookOpen,
-} from "react-icons/fi";
+import { FiPlus, FiTrash2, FiBookOpen } from "react-icons/fi";
 
 const Step4Education = ({ onNext, onBack }) => {
   const { resumeData, updateResumeData } = useResume();
