@@ -149,14 +149,14 @@ export const ResumeProvider = ({ children }) => {
 
     try {
       setLoading(true);
-      const { data } = await axiosInstance.delete(`/resume/delete/${id}`);
+      await axiosInstance.delete(`/resume/delete/${id}`);
 
-      setResumeData((prevResumes) =>
-        prevResumes.filter((resume) => resume._id !== id)
-      );
+      setUserResumes((prevResumes) => {
+        if (!Array.isArray(prevResumes)) return [];
+        return prevResumes.filter((resume) => resume._id !== id);
+      });
     } catch (error) {
-      console.error("Error deleting resume:", error);
-      alert("Failed to delete resume. Please try again.");
+      console.error("Delete failed:", error);
     } finally {
       setLoading(false);
     }
