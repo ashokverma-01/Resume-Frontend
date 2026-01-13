@@ -145,12 +145,18 @@ export const ResumeProvider = ({ children }) => {
   };
 
   const handleDeleteResume = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this resume?")) return;
+
     try {
       setLoading(true);
       const { data } = await axiosInstance.delete(`/resume/delete/${id}`);
-      return data;
+
+      setResumeData((prevResumes) =>
+        prevResumes.filter((resume) => resume._id !== id)
+      );
     } catch (error) {
-      console.log(error);
+      console.error("Error deleting resume:", error);
+      alert("Failed to delete resume. Please try again.");
     } finally {
       setLoading(false);
     }
