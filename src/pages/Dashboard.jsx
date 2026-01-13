@@ -8,7 +8,13 @@ import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { getUserResumes, userResumes, resetResume, loading } = useResume();
+  const {
+    getUserResumes,
+    userResumes,
+    resetResume,
+    loading,
+    handleDeleteResume,
+  } = useResume();
   const [showUpload, setShowUpload] = useState(false);
 
   useEffect(() => {
@@ -93,7 +99,10 @@ const Dashboard = () => {
                       <Pencil size={16} />
                     </button>
                     <button className="p-2 rounded-lg bg-white shadow-md hover:bg-red-50 text-gray-400 hover:text-red-500 border border-gray-100 transition-colors">
-                      <Trash2 size={16} />
+                      <Trash2
+                        size={16}
+                        onClick={handleDeleteResume(resume._id)}
+                      />
                     </button>
                   </div>
 

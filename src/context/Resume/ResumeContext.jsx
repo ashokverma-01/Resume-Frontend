@@ -16,7 +16,6 @@ export const ResumeProvider = ({ children }) => {
     }));
   };
 
-  // Helper: Convert data to FormData (arrays & files)
   const buildFormData = (data) => {
     const formData = new FormData();
     Object.entries(data).forEach(([key, value]) => {
@@ -60,7 +59,7 @@ export const ResumeProvider = ({ children }) => {
     }
   };
 
-  // Update existing resume
+  // Update  resume
   const updateResume = async (overrideData = {}) => {
     if (!resumeId) return { success: false, message: "Resume ID not found" };
 
@@ -145,6 +144,18 @@ export const ResumeProvider = ({ children }) => {
     }
   };
 
+  const handleDeleteResume = async (id) => {
+    try {
+      setLoading(true);
+      const { data } = await axiosInstance.delete(`/resume/delete/${id}`);
+      return data;
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Reset resume state
   const resetResume = () => {
     setResumeData({});
@@ -163,6 +174,7 @@ export const ResumeProvider = ({ children }) => {
         getPublicResumeById,
         userResumes,
         resetResume,
+        handleDeleteResume,
         resumeId,
         loading,
       }}
