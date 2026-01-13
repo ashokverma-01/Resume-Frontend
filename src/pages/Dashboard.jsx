@@ -98,11 +98,14 @@ const Dashboard = () => {
                     >
                       <Pencil size={16} />
                     </button>
-                    <button className="p-2 rounded-lg bg-white shadow-md hover:bg-red-50 text-gray-400 hover:text-red-500 border border-gray-100 transition-colors">
-                      <Trash2
-                        size={16}
-                        onClick={handleDeleteResume(resume._id)}
-                      />
+                    <button
+                      className="p-2 rounded-lg bg-white shadow-md hover:bg-red-50 text-gray-400 hover:text-red-500 border border-gray-100 transition-colors"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteResume(resume._id);
+                      }}
+                    >
+                      <Trash2 size={16} />
                     </button>
                   </div>
 
